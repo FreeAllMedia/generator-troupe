@@ -1,0 +1,67 @@
+{
+  "name": "generator-troupe",
+  "version": "0.1.0",
+  "description": "Generator for FAM troupe.",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FreeAllMedia/generator-troupe.git"
+  },
+  "keywords": [
+    "generator-troupe"
+  ],
+  "author": "Free All Media, LLC",
+  "contributors": [
+    {
+      "name": "nicosommi",
+      "email": "nicosommi@gmail.com"
+    },
+    {
+      "name": "dcrockwell",
+      "email": "dcautomates@gmail.com"
+    },
+    {
+      "name": "paulgoggin",
+      "email": "pgoggin@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FreeAllMedia/generator-troupe/issues"
+  },
+  "homepage": "https://github.com/FreeAllMedia/generator-troupe",
+  "dependencies": {
+    "chalk": "^1.1.0",
+    "jargon": "^0.1.14",
+    "yeoman-generator": "^0.20.1",
+    "yo": "^1.4.7",
+    "yosay": "^1.0.4"
+  },
+  "devDependencies": {
+    "babel": "^5.5.6",
+    "babel-eslint": "^3.1.20",
+    "eslint": "^0.24.0",
+    "chai": "^3.0.0",
+    "coveralls": "^2.11.2",
+    "gulp": "^3.9.0",
+    "gulp-util": "^3.0.6",
+    "gulp-babel": "^5.1.0",
+    "gulp-istanbul": "^0.10.0",
+    "gulp-spawn-mocha": "^2.2.1",
+    "karma": "^0.12.36",
+    "karma-browserify": "^4.2.1",
+    "karma-chai": "^0.1.0",
+    "karma-mocha": "^0.1.10",
+    "karma-detect-browsers": "^2.0.0",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-ie-launcher": "^0.2.0",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "karma-safari-launcher": "^0.1.1",
+    "karma-sauce-launcher": "^0.2.11",
+    "mocha": "^2.2.5"
+  }
+}
