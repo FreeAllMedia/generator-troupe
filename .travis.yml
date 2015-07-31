@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+- '0.12'
+- '0.11'
+- iojs-v1
+- iojs-v2
+script: npm test
+before_script:
+- npm install
+after_success:
+- ./node_modules/coveralls/bin/coveralls.js < ./lcov.info
+deploy:
+  provider: npm
+  email: fam-operations@freeallmedia.com
+  api_key:
+    secure: qDnQr5zvfzkc+Bx31/Jv5ppG3szZHnqaPkvZHI3WlVmQPVn45RshltVmRfpDMMB1h3mh763kbMUSPUkP7u7W08FJv6zTJTlEuDBMmN+1eE2oc9PCyS2c8nuhqQ6wZZXfXZtj/ObhjLk1teQ+eo0cjTMYHzgYek73iawCmXE8vYxo2+0D5MY+tc9ziNdGbCgPOpme5W4NzcmsR7sYWPBAqNbG2nwyckwy4O5JzO4WlQTzlit/tdnSvBvjt1mnp4cTqNLm1+EiY4jN9a/o/Re/yZbWw1mvwX4SiqLtBvVrqCuOj2hjW/UW6C0h4hHMPAUY7UfSBhnBgrB4cfe3w1xIi69bOCdJdX1eb7wjdB1NudL0+j6SxkOFjlNvg5TqlfybgkpDmXbiZTJ/KYsS4F4Aj8n11zHmRGchH88MaWjSJCs48F4wFYNun6svS3g+5tttGZGBu72IEj1ceK7Su9Hjz68kHK85tWEuXuUDc96gGVnYY6/p5Mm4iJx+5JmW6n85/FMsjDC9obY5ZGcb1B8nDhXtEp43usm9Ep2oas5GDPEHFrYbil+Ro29TeJggAPZfBQv9saM0Nt6+kyKIpg2sJOtpoL5egC+HEjGjqlumuL3nYZNipO66qOTMQptSa47NEE+TdIZXzW9j6oX1XJdKhboY61mJ6HjxVLW51VJyFSU=
+  on:
+    repo: FreeAllMedia/generator-troupe
+    branch: master
