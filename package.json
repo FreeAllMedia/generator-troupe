@@ -1,6 +1,6 @@
 {
   "name": "generator-troupe",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generator for FAM troupe.",
   "main": "index.js",
   "scripts": {
