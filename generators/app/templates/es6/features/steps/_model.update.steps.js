@@ -25,19 +25,21 @@ export default function <%= Name %>ControllerUpdateSteps () {
 			this.<%= name %> = {};
 		}
 
-		if(this.<%= name %>.name) {
-			this.<%= name %>.name = "newName";
+		let entityToUpdate = {};
+		if(this.itemList.name) {
+			entityToUpdate = Object.assign(entityToUpdate, this.itemList);
+			entityToUpdate.name = "newName";
 		}
 
 		//TODO ADD MOCKS WITH ATTRIBUTES
-		this.querySpy = this.database.spy(/update `<%= _name %>s` set `title` = 'newName', `updated_at` = '[0-9\:\- \.]*' where `id` = 1/, [1]);
+		this.querySpy = this.database.spy(/update `<%= _name %>s` set `name` = 'newName', `updated_at` = '[0-9\:\- \.]*' where `id` = 1/, [1]);
 
 		Request
 			.put
 			.url(this.url + "/<%= name %>/" + this.<%= name %>Id)
 			.header("Content-Type", "application/vnd.api+json")
 			.header("Client-Access-Token", this.clientAccessToken)
-			.data({data: this.<%= name %>})
+			.data({data: entityToUpdate})
 			.results((error, response) => {
 				this.response = response;
 				callback();
