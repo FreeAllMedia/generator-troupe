@@ -41,8 +41,8 @@ module.exports = yeoman.generators.Base.extend({
 		.forEach((templatePath) => {
 			let newName = templatePath.replace("_model", `${context.name}`);
 			this.fs.copyTpl(
-				this.templatePath("features/" + templatePath),
-				this.destinationPath(`features/${context.name}/${newName}`),
+				this.templatePath("es6/features/" + templatePath),
+				this.destinationPath(`es6/features/${context.name}/${newName}`),
 				context
 			);
 		}, this);
