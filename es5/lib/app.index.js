@@ -48,14 +48,14 @@ module.exports = yeoman.generators.Base.extend({
 		//copy feature steps
 		["_model.common.steps.js", "_model.show.steps.js", "_model.create.steps.js", "_model.update.steps.js", "_model.delete.steps.js", "_model.list.steps.js"].forEach(function (templatePath) {
 			var newName = templatePath.replace("_model", "" + context.name);
-			_this.fs.copyTpl(_this.templatePath("features/steps/" + templatePath), _this.destinationPath("features/steps/" + context.name + "/" + newName), context);
+			_this.fs.copyTpl(_this.templatePath("es6/features/steps/" + templatePath), _this.destinationPath("es6/features/steps/" + context.name + "/" + newName), context);
 		}, this);
 
 		//copy fixtures
-		this.fs.copyTpl(this.templatePath("spec/fixtures/_modelFixtures.json"), this.destinationPath("spec/fixtures/" + context.names + ".json"), context);
+		this.fs.copyTpl(this.templatePath("es6/spec/fixtures/_modelFixtures.json"), this.destinationPath("es6/spec/fixtures/" + context.names + ".json"), context);
 
 		//copy controller
-		this.fs.copyTpl(this.templatePath("app/controllers/_modelController.js"), this.destinationPath("app/controllers/" + context.name + "Controller.js"), context);
+		this.fs.copyTpl(this.templatePath("es6/app/controllers/_modelController.js"), this.destinationPath("es6/app/controllers/" + context.name + "Controller.js"), context);
 	},
 
 	install: function yoInstall() {

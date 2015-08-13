@@ -49,23 +49,23 @@ module.exports = yeoman.generators.Base.extend({
 		.forEach((templatePath) => {
 			let newName = templatePath.replace("_model", `${context.name}`);
 			this.fs.copyTpl(
-				this.templatePath("features/steps/" + templatePath),
-				this.destinationPath(`features/steps/${context.name}/${newName}`),
+				this.templatePath("es6/features/steps/" + templatePath),
+				this.destinationPath(`es6/features/steps/${context.name}/${newName}`),
 				context
 			);
 		}, this);
 
 		//copy fixtures
 		this.fs.copyTpl(
-			this.templatePath("spec/fixtures/_modelFixtures.json"),
-			this.destinationPath(`spec/fixtures/${context.names}.json`),
+			this.templatePath("es6/spec/fixtures/_modelFixtures.json"),
+			this.destinationPath(`es6/spec/fixtures/${context.names}.json`),
 			context
 		);
 
 		//copy controller
 		this.fs.copyTpl(
-			this.templatePath("app/controllers/_modelController.js"),
-			this.destinationPath(`app/controllers/${context.name}Controller.js`),
+			this.templatePath("es6/app/controllers/_modelController.js"),
+			this.destinationPath(`es6/app/controllers/${context.name}Controller.js`),
 			context
 		);
 	},

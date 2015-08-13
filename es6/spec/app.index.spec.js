@@ -19,38 +19,38 @@ describe("troupe", () => {
 
   it("creates step files", () => {
     assert.file([
-      `features/steps/${name}/${name}.common.steps.js`,
-      `features/steps/${name}/${name}.show.steps.js`,
-      `features/steps/${name}/${name}.create.steps.js`,
-      `features/steps/${name}/${name}.update.steps.js`,
-      `features/steps/${name}/${name}.delete.steps.js`,
-      `features/steps/${name}/${name}.list.steps.js`
+      `es6/features/steps/${name}/${name}.common.steps.js`,
+      `es6/features/steps/${name}/${name}.show.steps.js`,
+      `es6/features/steps/${name}/${name}.create.steps.js`,
+      `es6/features/steps/${name}/${name}.update.steps.js`,
+      `es6/features/steps/${name}/${name}.delete.steps.js`,
+      `es6/features/steps/${name}/${name}.list.steps.js`
     ]);
   });
 
   it("creates the fixture file", () => {
     assert.file([
-      `spec/fixtures/${name}s.json`
+      `es6/spec/fixtures/${name}s.json`
     ]);
   });
 
   it("creates the controller", () => {
     assert.file([
-      `app/controllers/${name}Controller.js`
+      `es6/app/controllers/${name}Controller.js`
     ]);
   });
 
   describe("(about the content of every feature)", () => {
     it("should have some this.querySpy = on it", () => {
-      assert.fileContent([[`features/steps/${name}/${name}.show.steps.js`, "this.querySpy ="]]);
+      assert.fileContent([[`es6/features/steps/${name}/${name}.show.steps.js`, "this.querySpy ="]]);
     });
 
     describe("(controller content)", () => {
         it("should have filters for validation", () => {
             assert.fileContent([
-                    [`app/controllers/${name}Controller.js`, "filters()"],
-                    [`app/controllers/${name}Controller.js`, "[validateId]"],
-                    [`app/controllers/${name}Controller.js`, "[validateData]"]
+                    [`es6/app/controllers/${name}Controller.js`, "filters()"],
+                    [`es6/app/controllers/${name}Controller.js`, "[validateId]"],
+                    [`es6/app/controllers/${name}Controller.js`, "[validateData]"]
                 ]);
         });
     });
