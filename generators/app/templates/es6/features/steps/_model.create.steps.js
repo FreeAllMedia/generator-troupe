@@ -1,64 +1,51 @@
 /* eslint-disable new-cap */
-const <%= name %>Fixtures = require("../../../spec/fixtures/<%= name %>s.json");
+//import <%= Name %> from "../../../app/models/<%= name %>.js";
+import {makeRequest} from "../common/request.js";
+import {dateRegex} from "../common/values.js";
 
-import Request from "appeal";
+const <%= name %> = {
+  "id": 1,
+  "accountId": 1,
+  "name": "test <%= name %>",
+  "permalink": "some permalink",
+  "allowedLocations": "ar"
+};
 
-export default function <%= Name %>ControllerShowSteps () {
-	this.When(/^a valid create <%= name %> request is received$/, function (callback) {
-		this.database.mock({
-			"select * from `client_access_tokens` where `token` = 'valid-client-access-token' and `deleted_at` is null limit 1": [
-				this.clientAccessTokenRecord
-			],
-			"select * from `client_access_tokens` where `token` = 'invalid-client-access-token' and `deleted_at` is null limit 1": [
-			],
-			"select * from `client_access_tokens` where `token` = 'expired-client-access-token' and `deleted_at` is null limit 1": [
-				this.clientAccessTokenRecord
-			]
-		});
+const invalid<%= Name %> = {
+  "id": 1,
+  "accountId": 1
+};
 
-		//TODO: ADD ATTRIBUTES
-		//new RegExp(`insert into `<%= names %>` \(`created_at`, `title`\) values \('[0-9\:\- \.]*', '${<%= name %>Fixtures[0].title}'\)`)
-		this.querySpy = this.database.spy(/insert into `<%= _name %>s` \(`created_at`, `title`\) values \('[0-9\:\- \.]*', ''\)/, [12]);
+export default function <%= Name %>CreateSteps() {
+  this.When(/^<%= name %> create request is received$/, function (callback) {
+    //load query mocks
+    this.database
+      .mock
+      .insert({
+        "account_id": <%= name %>.accountId,
+        "allowed_locations": <%= name %>.allowedLocations,
+        "created_at": dateRegex,
+        "is_sandbox": true,
+        "name": <%= name %>.name,
+        "permalink": <%= name %>.permalink
+      })
+      .into("<%= name %>s")
+      .results(1);
+    //make request
+    this.body = {data: <%= name %>};
+    makeRequest.call(this, "/<%= name %>", "post",
+      () => {
+        callback();
+      });
+  });
 
-		Request
-			.post
-			.url(this.url + "/<%= name %>")
-			.data({data: this.<%= name %>})
-			.header("Content-Type", "application/vnd.api+json")
-			.header("Client-Access-Token", this.clientAccessToken)
-			.results((error, response) => {
-				this.response = response;
-				callback();
-			});
-	});
-
-	this.When(/^an invalid create <%= name %> request is received$/, function (callback) {
-		this.database.mock({
-			"select * from `client_access_tokens` where `token` = 'valid-client-access-token' and `deleted_at` is null limit 1": [
-				this.clientAccessTokenRecord
-			]
-		});
-
-		Request
-			.post
-			.url(this.url + "/<%= name %>")
-			.header("Content-Type", "application/vnd.api+json")
-			.header("Client-Access-Token", "valid-client-access-token")
-			.data({data2: this.<%= name %>})
-			.results((error, response) => {
-				this.response = response;
-				callback();
-			});
-	});
-
-	this.Then(/^respond with the newly created <%= name %>'s details$/, function thenRespond<%= Name %>Details(callback) {
-		this.response.body.should.have.property("data");
-		this.response.body.data.should.have.property("type");
-		this.response.body.data.should.have.property("id");
-		this.response.body.data.should.have.property("attributes");
-		this.response.body.data.type.should.equal("<%= Name %>");
-		//TODO ADD ATTRIBUTES
-		this.response.body.data.attributes.name.should.equal(<%= name %>Fixtures[0].name);
-		callback();
-	});
+  this.When(/^an invalid <%= name %> create request is received$/, function (callback) {
+    //prepare request body
+    this.body = {data: invalid<%= Name %>};
+    //make request
+    makeRequest.call(this, "/<%= name %>", "post",
+      () => {
+        callback();
+      });
+  });
 }

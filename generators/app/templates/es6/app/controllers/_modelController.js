@@ -1,117 +1,132 @@
 import ApplicationController from "./applicationController.js";
 import <%= Name %> from "../models/<%= name %>.js";
-import MultiError from "blunder";
-import {isAssigned} from "proven";
-import {BadRequestError} from "../errors.js";
+import {NotFoundError} from "../errors.js";
+import {create<%= Name %>, update<%= Name %>, get<%= Name %>ById, get<%= Name %>s, get<%= Name %>sByAccountId, delete<%= Name %>} from "../managers/<%= name %>Manager.js";
 
-const validateId = Symbol("validateId"),
-	validateData = Symbol("validateData");
+const pullAccountIdFrom<%= Name %> = Symbol("pullAccountIdFrom<%= Name %>"),
+  pullAccountIdFromRequest = Symbol("pullAccountIdFromRequest"),
+  pullAccountIdFromUrl = Symbol("pullAccountIdFromUrl");
 
 export default class <%= Name %>Controller extends ApplicationController {
-	filters() {
-		this.before([this.show, this.delete, this.update], this[validateId]);
-		this.before([this.create, this.update], this[validateData]);
-	}
+  filters() {
+    this.before([this.show, this.update, this.delete], this.validateId);
+    this.before([this.show, this.update, this.delete], this[pullAccountIdFrom<%= Name %>]);
+    this.before([this.create], this[pullAccountIdFromRequest]);
+    this.before([this.list], this[pullAccountIdFromUrl]);
+    this.before([this.show, this.create, this.update, this.list, this.delete, this.listAll], this.validateAccessToken);
+    this.before(this.listAll, this.isAdmin);
+  }
 
-	show(request, response) {
-		let <%= name %> = new <%= Name %>({id: request.params.id});
-		<%= name %>.fetch((fetchError) => {
-			if(fetchError) {
-				response.notFound(fetchError);
-			} else {
-				response.ok(<%= name %>.toJSON());
-			}
-		});
-	}
+  //pulls the account id on which the user is trying to create the <%= name %> from the request body
+  [pullAccountIdFromRequest] (request, response, next) {
+    request.accountId = request.body.data.accountId;
+    next();
+  }
 
-	create(request, response) {
-		let new<%= Name %> = new <%= Name %>({
-			contentPackageId: request.body.data.contentPackageId,
-			name: request.body.data.name
-		});
+  //pulls the account id
+  [pullAccountIdFromUrl] (request, response, next) {
+    request.accountId = request.params.id;
+    next();
+  }
 
-		new<%= Name %>.save((saveError) => {
-			if(saveError) {
-				response.conflict(saveError);
-			} else {
-				response.created(new<%= Name %>.toJSON());
-			}
-		});
-	}
+  //pulls out the <%= name %> from the database and get the account id from it
+  [pullAccountIdFrom<%= Name %>] (request, response, next) {
+    get<%= Name %>ById(request.params.id,
+      (findError, <%= name %>) => {
+          if(findError) {
+            response.internalServerError(findError);
+          } else if(<%= name %> && <%= name %>.id > 0 && <%= name %>.accountId > 0) {
+            //HACK: this new should be done by dovima
+            request.<%= name %> = new <%= Name %>(<%= name %>);
+            request.accountId = <%= name %>.accountId;
+            next();
+          } else {
+            response.notFound(new NotFoundError());
+          }
+        }
+      );
+  }
 
-	update(request, response) {
-		let <%= name %> = new <%= Name %>();
-		<%= name %>.id = request.params.id;
-		<%= name %>
-		.fetch((fetchError) => {
-			if(fetchError) {
-				response.notFound(fetchError);
-			} else {
-				<%= name %>.contentPackageId = request.body.data.contentPackageId;
-				<%= name %>.name = request.body.data.name;
+  show(request, response) {
+    //TODO: this same query is executed before by a filter, implement some kind of CACHE
+    get<%= Name %>ById(request.params.id,
+      (findError, <%= name %>) => {
+          if(findError) {
+            response.internalServerError(findError);
+          } else if(<%= name %> && <%= name %>.id > 0 && <%= name %>.accountId > 0) {
+            response.ok(this.toJSON(request.<%= name %>));
+          } else {
+            response.notFound(new NotFoundError());
+          }
+        }
+      );
+  }
 
-				<%= name %>.save((saveError) => {
-					if(saveError) {
-						response.conflict(saveError);
-					} else {
-						response.ok(<%= name %>.toJSON());
-					}
-				});
-			}
-		});
-	}
+  list(request, response) {
+		//TODO: check query and method name
+    get<%= Name %>sByAccountId(request.params.id,
+      (findError, <%= name %>s) => {
+          if(findError) {
+            response.internalServerError(findError);
+          } else if(Array.isArray(<%= name %>s)) {
+            response.ok(this.toJSON(<%= name %>s));
+          } else {
+            response.ok(this.toJSON(<%= name %>s));
+          }
+        }
+      );
+  }
 
-	delete(request, response) {
-		let <%= name %> = new <%= Name %>({id: request.params.id});
-		<%= name %>.fetch((fetchError) => {
-			if(fetchError) {
-				response.notFound(fetchError);
-			} else {
-				<%= name %>.delete((deleteError) => {
-					if(deleteError) {
-						response.internalServerError(deleteError);
-					} else {
-						response.noContent();
-					}
-				});
-			}
-		});
-	}
+  listAll(request, response) {
+    get<%= Name %>s(
+      (findError, <%= name %>s) => {
+          if(findError) {
+            response.internalServerError(findError);
+          } else if(Array.isArray(<%= name %>s)) {
+            response.ok(this.toJSON(<%= name %>s));
+          } else {
+            response.ok(this.toJSON(<%= name %>s));
+          }
+        }
+      );
+  }
 
-	list(request, response) {
-		<%= Name %>
-			.find
-			.all
-			.results((errors, <%= Name %>s) => {
-				if(errors) {
-					let multiError = new MultiError(errors);
-					response.conflict(multiError);
+  create(request, response) {
+    create<%= Name %>(request.body.data,
+			(createError, newEntity) => {
+				if(createError) {
+					response.conflict(createError);
 				} else {
-					let result = <%= Name %>s.map((value) => {
-						return value.toJSON();
-					});
-					response.ok(result);
+					response.created(this.toJSON(newEntity));
 				}
-			});
-	}
+			}
+		);
+  }
 
-	[validateId](request, response, next) {
-		if(request.params.id > 0) {
-			next();
-		} else {
-			let error = new BadRequestError();
-			response.badRequest(error);
-			next(error);
-		}
-	}
+  update(request, response) {
+    update<%= Name %>(request.params.id,
+      request.body.data,
+      (updateError, <%= name %>) => {
+          if(updateError) {
+            response.conflict(updateError);
+          } else if(<%= name %> && <%= name %>.id > 0 && <%= name %>.accountId > 0) {
+            response.ok(this.toJSON(request.<%= name %>));
+          } else {
+            response.notFound(new NotFoundError());
+          }
+        }
+      );
+  }
 
-	[validateData](request, response, next) {
-		if(isAssigned.call(request.body, "data").result) {
-			next();
-		} else {
-			let error = new BadRequestError();
-			response.badRequest(error);
-			next(error);
-		}
-	}
+  delete(request, response) {
+    delete<%= Name %>(request.params.id,
+      (deleteError) => {
+          if(deleteError) {
+            response.conflict(deleteError);
+          } else {
+            response.noContent();
+          }
+        }
+      );
+  }
 }

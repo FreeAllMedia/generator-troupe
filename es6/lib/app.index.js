@@ -40,8 +40,7 @@ module.exports = yeoman.generators.Base.extend({
 		};
 
 		//copy feature steps
-		["_model.common.steps.js",
-		"_model.show.steps.js",
+		["_model.show.steps.js",
 		"_model.create.steps.js",
 		"_model.update.steps.js",
 		"_model.delete.steps.js",
@@ -55,19 +54,91 @@ module.exports = yeoman.generators.Base.extend({
 			);
 		}, this);
 
-		//copy fixtures
+		//copy common steps
+		["_common.steps.js",
+		"_accessToken.steps.js"]
+		.forEach((templatePath) => {
+			let newName = templatePath.replace("_", "");
+			this.fs.copyTpl(
+				this.templatePath(`es6/features/steps/${templatePath}`),
+				this.destinationPath(`es6/features/steps/${newName}`),
+				context
+			);
+		}, this);
+
+		//copy support files
+		["_hooks.js",
+		"_world.js"]
+		.forEach((templatePath) => {
+			let newName = templatePath.replace("_", "");
+			this.fs.copyTpl(
+				this.templatePath(`es6/features/support/${templatePath}`),
+				this.destinationPath(`es6/features/support/${newName}`),
+				context
+			);
+		}, this);
+
+		//copy controllers
+		["_modelController.js",
+		"_applicationController.js"]
+		.forEach((templatePath) => {
+			let newName = templatePath.replace("_model", `${context.name}`).replace("_", "");
+			this.fs.copyTpl(
+				this.templatePath(`es6/app/controllers/${templatePath}`),
+				this.destinationPath(`es6/app/controllers/${newName}`),
+				context
+			);
+		}, this);
+
+		//copy managers
+		["_accountManager.js",
+		"_modelManager.js"]
+		.forEach((templatePath) => {
+			let newName = templatePath.replace("_model", `${context.name}`).replace("_", "");
+			this.fs.copyTpl(
+				this.templatePath(`es6/app/managers/${templatePath}`),
+				this.destinationPath(`es6/app/managers/${newName}`),
+				context
+			);
+		}, this);
+
+		//copy model
 		this.fs.copyTpl(
-			this.templatePath("es6/spec/fixtures/_modelFixtures.json"),
-			this.destinationPath(`es6/spec/fixtures/${context.names}.json`),
+			this.templatePath(`es6/app/models/_model.js`),
+			this.destinationPath(`es6/app/models/${context.name}.js`),
 			context
 		);
 
-		//copy controller
+		//copy model spec
 		this.fs.copyTpl(
-			this.templatePath("es6/app/controllers/_modelController.js"),
-			this.destinationPath(`es6/app/controllers/${context.name}Controller.js`),
+			this.templatePath(`es6/spec/_model.spec.js`),
+			this.destinationPath(`es6/spec/${context.name}.spec.js`),
 			context
 		);
+
+		//copy routers
+		["_modelRouter.js",
+		"_modelRoutes.js"]
+		.forEach((templatePath) => {
+			let newName = templatePath.replace("_model", `${context.name}`).replace("_", "");
+			this.fs.copyTpl(
+				this.templatePath(`es6/app/routers/${templatePath}`),
+				this.destinationPath(`es6/app/routers/${newName}`),
+				context
+			);
+		}, this);
+
+		//copy misc
+		["_errors.js",
+		"_server.js"]
+		.forEach((templatePath) => {
+			let newName = templatePath.replace("_", "");
+			this.fs.copyTpl(
+				this.templatePath(`es6/app/${templatePath}`),
+				this.destinationPath(`es6/app/${newName}`),
+				context
+			);
+		}, this);
 	},
 
 	install: function yoInstall() {

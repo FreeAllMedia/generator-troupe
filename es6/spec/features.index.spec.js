@@ -19,11 +19,12 @@ describe("troupe:features", () => {
 
   it("creates feature files", () => {
     assert.file([
-      `es6/features/${name}/${name}.show.feature`,
-      `es6/features/${name}/${name}.create.feature`,
-      `es6/features/${name}/${name}.update.feature`,
-      `es6/features/${name}/${name}.delete.feature`,
-      `es6/features/${name}/${name}.list.feature`
+      `features/${name}/${name}.show.feature`,
+      `features/${name}/${name}.create.feature`,
+      `features/${name}/${name}.update.feature`,
+      `features/${name}/${name}.delete.feature`,
+      `features/${name}/${name}.list.feature`,
+      `features/accessToken.feature`
     ]);
   });
 });
