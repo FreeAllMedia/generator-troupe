@@ -4,7 +4,8 @@
   "description": "Generator for FAM troupe.",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "postinstall": "gulp build"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,7 @@
     "babel-eslint": "^3.1.20",
     "chai": "^3.0.0",
     "coveralls": "^2.11.2",
+    "del": "^2.0.2",
     "eslint": "^0.24.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
