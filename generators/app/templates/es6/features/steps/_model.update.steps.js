@@ -1,78 +1,83 @@
 /* eslint-disable new-cap */
-const <%= name %>Fixtures = require("../../../spec/fixtures/<%= name %>s.json");
+//import <%= Name %> from "../../../app/models/<%= name %>.js";
+import {makeRequest} from "../common/request.js";
+import {dateRegex} from "../common/values.js";
 
-import Request from "appeal";
+const <%= name %> = {
+	"id": 1,
+	"accountId": 1,
+	<%- attributesWithValues %>
+};
 
-export default function <%= Name %>ControllerUpdateSteps () {
-	this.When(/^a valid update <%= name %> request is received$/, function (callback) {
-		this.database.mock({
-			"select * from `<%= _name %>s` where `id` = '2' and `deleted_at` is null limit 1": [
-			],
-			"select * from `<%= _name %>s` where `id` = '1' and `deleted_at` is null limit 1": [
-				<%= name %>Fixtures[0]
-			],
-			"select * from `client_access_tokens` where `token` = 'valid-client-access-token' and `deleted_at` is null limit 1": [
-				this.clientAccessTokenRecord
-			],
-			"select * from `client_access_tokens` where `token` = 'invalid-client-access-token' and `deleted_at` is null limit 1": [
-			],
-			"select * from `client_access_tokens` where `token` = 'expired-client-access-token' and `deleted_at` is null limit 1": [
-				this.clientAccessTokenRecord
-			]
-		});
+const invalid<%= Name %> = {
+	"id": 1,
+	"accountId": 1
+};
 
-		if(!this.<%= name %>) {
-			this.<%= name %> = {};
-		}
+export default function <%= Name %>UpdateSteps() {
+	this.When(/^<%= name %> update request is received$/, function (callback) {
+		//load query mocks
+		this.database
+			.mock
+			.select("*")
+			.from("<%= name %>s")
+			.whereNull("deleted_at")
+			.andWhere("id", 1)
+			.limit(1)
+			.results([<%= name %>]);
 
-		let entityToUpdate = {};
-		if(this.itemList.name) {
-			entityToUpdate = Object.assign(entityToUpdate, this.itemList);
-			entityToUpdate.name = "newName";
-		}
-
-		//TODO ADD MOCKS WITH ATTRIBUTES
-		this.querySpy = this.database.spy(/update `<%= _name %>s` set `name` = 'newName', `updated_at` = '[0-9\:\- \.]*' where `id` = 1/, [1]);
-
-		Request
-			.put
-			.url(this.url + "/<%= name %>/" + this.<%= name %>Id)
-			.header("Content-Type", "application/vnd.api+json")
-			.header("Client-Access-Token", this.clientAccessToken)
-			.data({data: entityToUpdate})
-			.results((error, response) => {
-				this.response = response;
+			this.database
+				.mock
+				.update({
+					//TODO: add attributes
+					"account_id": 1,
+					"updated_at": dateRegex,
+					<%- attributesWithValues %>
+				})
+				.into("<%= name %>s")
+				.where("id", "=", 1)
+				.results(1);
+		//make request
+		this.body = {data: <%= name %>};
+		makeRequest.call(this, `/<%= name %>/${<%= name %>.id}`, "put",
+			() => {
 				callback();
 			});
 	});
 
-	this.When(/^an invalid update <%= name %> request is received$/, function (callback) {
-		this.database.mock({
-			"select * from `client_access_tokens` where `token` = 'valid-client-access-token' and `deleted_at` is null limit 1": [
-				this.clientAccessTokenRecord
-			]
-		});
-
-		Request
-			.put
-			.url(this.url + "/<%= name %>/1")
-			.header("Content-Type", "application/vnd.api+json")
-			.header("Client-Access-Token", "valid-client-access-token")
-			.data({data2: this.<%= name %>})
-			.results((error, response) => {
-				this.response = response;
+	this.When(/^an invalid <%= name %> update request is received$/, function (callback) {
+		//prepare request body
+		this.body = {data: invalid<%= Name %>};
+		this.database
+			.mock
+			.select("*")
+			.from("<%= name %>s")
+			.whereNull("deleted_at")
+			.andWhere("id", 1)
+			.limit(1)
+			.results([invalid<%= Name %>]);
+		//make request
+		makeRequest.call(this, `/<%= name %>/${invalid<%= Name %>.id}`, "put",
+			() => {
 				callback();
 			});
 	});
 
-
-	this.Then(/^respond with the updated <%= name %>'s details$/, function (callback) {
-		this.response.body.should.have.property("data");
-		this.response.body.data.should.have.property("type");
-		this.response.body.data.should.have.property("attributes");
-		this.response.body.data.should.have.property("id");
-		this.response.body.data.type.should.equal("<%= Name %>");
-		this.response.body.data.attributes.name.should.equal("newName");
-		callback();
+	this.When(/^an unexisting <%= name %> update request is received$/, function (callback) {
+		//prepare request body
+		this.body = {data: invalid<%= Name %>};
+		this.database
+			.mock
+			.select("*")
+			.from("<%= name %>s")
+			.whereNull("deleted_at")
+			.andWhere("id", 1)
+			.limit(1)
+			.results([]);
+		//make request
+		makeRequest.call(this, `/<%= name %>/${invalid<%= Name %>.id}`, "put",
+			() => {
+				callback();
+			});
 	});
 }

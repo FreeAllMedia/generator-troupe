@@ -1,62 +1,62 @@
 /* eslint-disable new-cap */
-const <%= name %>Fixtures = require("../../../spec/fixtures/<%= name %>s.json");
+//import <%= Name %> from "../../../app/models/<%= name %>.js";
+import {makeRequest} from "../common/request.js";
+import {dateRegex} from "../common/values.js";
 
-import Request from "appeal";
+const <%= name %> = {
+	//TODO: add attributes
+	"id": 1,
+	"accountId": 1,
+	"name": "test <%= name %>"
+};
 
-export default function <%= Name %>ControllerListSteps () {
+export default function <%= Name %>UpdateSteps() {
+	this.When(/^<%= name %> delete request is received$/, function (callback) {
+		//load query mocks
+		this.database
+			.mock
+			.select("*")
+			.from("<%= name %>s")
+			.whereNull("deleted_at")
+			.andWhere("id", 1)
+			.limit(1)
+			.results([<%= name %>]);
 
-	this.When(/^a valid delete <%= name %> request is received$/, function (callback) {
-		this.database.mock({
-			"select * from `<%= _name %>s` where `id` = '1' and `deleted_at` is null limit 1": [
-				<%= name %>Fixtures[0]
-			],
-			"select * from `<%= _name %>s` where `id` = '2' and `deleted_at` is null limit 1": [
-			],
-			"select * from `client_access_tokens` where `token` = 'valid-client-access-token' and `deleted_at` is null limit 1": [
-				this.clientAccessTokenRecord
-			],
-			"select * from `client_access_tokens` where `token` = 'invalid-client-access-token' and `deleted_at` is null limit 1": [
-			],
-			"select * from `client_access_tokens` where `token` = 'expired-client-access-token' and `deleted_at` is null limit 1": [
-				this.clientAccessTokenRecord
-			]
-		});
-
-		this.querySpy = this.database.spy(/update `<%= _name %>s` set `deleted_at` = '[0-9\:\- \.]*' where `id` = 1/, 1);
-
-		Request
-			.delete
-			.url(this.url + "/<%= name %>/" + this.<%= name %>Id)
-			.header("Content-Type", "application/vnd.api+json")
-			.header("Client-Access-Token", this.clientAccessToken)
-			.results((error, response) => {
-				this.response = response;
+		this.database
+			.mock
+			.update({
+				"account_id": 1,
+				"deleted_at": dateRegex,
+				"updated_at": dateRegex,
+				<%- fieldsWithValues %>
+			})
+			.into("<%= name %>s")
+			.where("id", 1)
+			.results(1);
+		//make request
+		this.body = {data: <%= name %>};
+		makeRequest.call(this, `/<%= name %>/${<%= name %>.id}`, "delete",
+			() => {
 				callback();
 			});
 	});
 
-	this.When(/^an invalid delete <%= name %> request is received$/, function (callback) {
-		this.database.mock({
-			"select * from `client_access_tokens` where `token` = 'valid-client-access-token' and `deleted_at` is null limit 1": [
-				this.clientAccessTokenRecord
-			]
-		});
-
-		Request
-			.delete
-			.url(this.url + "/<%= name %>/as")
-			.header("Content-Type", "application/vnd.api+json")
-			.header("Client-Access-Token", "valid-client-access-token")
-			.results((error, response) => {
-				this.response = response;
+	this.When(/^an invalid <%= name %> delete request is received$/, function (callback) {
+		//prepare request body
+		this.body = {data: <%= name %>};
+		//load query mocks
+		this.database
+			.mock
+			.select("*")
+			.from("<%= name %>s")
+			.whereNull("deleted_at")
+			.andWhere("id", 1)
+			.limit(1)
+			.results([]);
+		//make request
+		makeRequest.call(this, `/<%= name %>/${<%= name %>.id}`, "delete",
+			() => {
 				callback();
 			});
 	});
-
-
-	this.Then(/^the delete query was executed$/, function (callback) {
-		this.deleteQuerySpy.callCount.should.equal(1);
-		callback();
-	});
-
 }

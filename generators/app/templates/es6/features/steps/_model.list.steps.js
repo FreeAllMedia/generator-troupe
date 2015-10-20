@@ -1,48 +1,66 @@
 /* eslint-disable new-cap */
-const <%= name %>Fixtures = require("../../../spec/fixtures/<%= name %>s.json");
+//import <%= Name %> from "../../../app/models/<%= name %>.js";
+import {makeRequest} from "../common/request.js";
+//TODO: check attributes and account id particular relationship
+const <%= name %>s = [{
+		"id": 1,
+		"accountId": 1,
+		<%- attributesWithValues %>
+	}, {
+		"id": 2,
+		"accountId": 1,
+		<%- attributesWithValues %>
+	}
+];
 
-import Request from "appeal";
-
-export default function <%= Name %>ControllerListSteps () {
-	this.When(/^a valid list <%= name %> request is received$/, function (callback) {
-		this.database.mock({
-			"select * from `client_access_tokens` where `token` = 'valid-client-access-token' and `deleted_at` is null limit 1": [
-				this.clientAccessTokenRecord
-			],
-			"select * from `client_access_tokens` where `token` = 'invalid-client-access-token' and `deleted_at` is null limit 1": [
-			],
-			"select * from `client_access_tokens` where `token` = 'expired-client-access-token' and `deleted_at` is null limit 1": [
-				this.clientAccessTokenRecord
-			]
-		});
-
-		this.querySpy = this.database.spy("select * from `<%= _name %>s`", [
-			<%= name %>Fixtures[0],
-			<%= name %>Fixtures[2],
-			<%= name %>Fixtures[3],
-			<%= name %>Fixtures[4],
-			<%= name %>Fixtures[5]
-		]);
-
-		Request
-			.get
-			.url(this.url + "/<%= name %>s")
-			.header("Content-Type", "application/vnd.api+json")
-			.header("Client-Access-Token", this.clientAccessToken)
-			.results((error, response) => {
-				this.response = response;
+export default function <%= Name %>ListSteps() {
+	this.When(/^<%= name %> list request is received$/, function (callback) {
+		//load query mocks
+		this.entityCount = <%= name %>s.length;
+		this.database
+			.mock
+			.select("*")
+			.from("<%= name %>s")
+			.whereNull("deleted_at")
+			.andWhere("account_id", 1)
+			.results(<%= name %>s);
+		//make request
+		makeRequest.call(this, `/account/${<%= name %>s[0].accountId}/<%= name %>s`, "get",
+			() => {
 				callback();
 			});
 	});
 
-	this.Then(/^respond with all the list of <%= name %>s$/, function (callback) {
-		this.response.body.should.have.property("data");
-		this.response.body.data.length.should.equal(5);
-		this.response.body.data[0].should.have.property("type");
-		this.response.body.data[0].should.have.property("attributes");
-		this.response.body.data[0].type.should.equal("<%= Name %>");
-		this.response.body.data[0].attributes.name.should.equal(<%= name %>Fixtures[0].name);
-		callback();
+	this.When(/^<%= name %> list all request is received$/, function (callback) {
+		//load query mocks
+		this.entityCount = <%= name %>s.length;
+		this.database
+			.mock
+			.select("*")
+			.from("<%= name %>s")
+			.whereNull("deleted_at")
+			.results(<%= name %>s);
+		//make request
+		makeRequest.call(this, `/<%= name %>s`, "get",
+			() => {
+				callback();
+			});
 	});
 
+
+	this.When(/^<%= name %> list request is received but there is no <%= name %> found$/, function (callback) {
+		//load query mocks
+		this.database
+			.mock
+			.select("*")
+			.from("<%= name %>s")
+			.whereNull("deleted_at")
+			.where("account_id", 1)
+			.results([]);
+		//make request
+		makeRequest.call(this, `/account/${<%= name %>s[0].accountId}/<%= name %>s`, "get",
+			() => {
+				callback();
+			});
+	});
 }

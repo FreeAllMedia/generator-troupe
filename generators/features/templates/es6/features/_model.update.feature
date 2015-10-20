@@ -1,53 +1,48 @@
-Feature: Update an existing <%= name %>
-	Server should update an existing <%= name %> with new attributes
-	Then respond with the updated <%= name %>'s details in JSON-API format
-	When provided:
-		A valid and authorized "Client-Access-Token" header
-		A valid <%= name %> identifier via url parameters
-		A valid set of <%= name %> attributes in JSON-API format
+Feature: update a <%= name %>
 
-	Scenario: client access token is valid and authorized, <%= name %> identifier is valid, and <%= name %> attributes are valid
-		Given client access token is valid
-			#And client access token is authorized
-			And <%= name %> parameters are valid
-			And <%= name %> is found
-		When a valid update <%= name %> request is received
-		Then respond with the updated <%= name %>'s details
+	Scenario: valid user sends a valid <%= name %>; return new <%= name %> details
+		Given a valid token
+		When <%= name %> update request is received
+			And all the business logic has completed
+		Then respond with the appropiate envelope
+			And with a class of type "<%= name %>"
 			And http status code "ok"
-			And the "update" query was executed
 
-	Scenario: client access token is valid and authorized, but <%= name %> identifier is not valid
-		Given client access token is valid
-			And <%= name %> parameters are valid
-			And <%= name %> is not found
-		When a valid update <%= name %> request is received
-		Then respond with error message, "There is no <%= Name %> for the given (id)."
-			And http status code "not found"
+	Scenario: valid admin sends a valid <%= name %>; return new <%= name %> details
+		Given a valid admin token
+		When <%= name %> update request is received
+			And all the business logic has completed
+		Then respond with the appropiate envelope
+			And with a class of type "<%= name %>"
+			And http status code "ok"
 
-	Scenario: client access token is valid and authorized, <%= name %> identifier is valid, but <%= name %> attributes are not valid
-		Given client access token is valid
-			#And client access token is authorized
-			And <%= name %> is found
-			And <%= name %> parameters are invalid
-		When a valid update <%= name %> request is received
+	Scenario: valid user sends a valid <%= name %> but for the wrong account; return new <%= name %> details
+		Given an unauthorized token
+		When <%= name %> update request is received
+			And all the business logic has completed
+		Then respond with error message "Your permissions does not allow you to manipulate the requested resource."
+			And http status code "unauthorized"
+
+	Scenario: access token is valid, authorized, and account parameters are invalid; return invalid parameter errors
+		Given a valid token
+		When an invalid <%= name %> update request is received
+			And all the business logic has completed
 		Then respond with error message title, "<%= Name %> is invalid"
 			And http status code "conflict"
 
-	# Scenario: client access token is valid, but unauthorized
+	Scenario: access token is valid, authorized, and account parameters are valid but the <%= name %> was not found; return not found
+		Given a valid token
+		When an unexisting <%= name %> update request is received
+		Then respond with error message title, "Not Found"
+			And http status code "not found"
 
-	Scenario: client access token is invalid
-		Given client access token is invalid
-		When a valid update <%= name %> request is received
-		Then respond with error message, "The client access token provided is invalid."
-			And http status code "unauthorized"
+	Scenario: access token is valid admin and account parameters are valid but the <%= name %> was not found; return not found
+		Given a valid admin token
+		When an unexisting <%= name %> update request is received
+		Then respond with error message title, "Not Found"
+			And http status code "not found"
 
-	Scenario: client access token is valid but expired, return error
-		Given client access token is expired
-		When a valid update <%= name %> request is received
-		Then respond with error message, "The client access token provided is expired."
-			And http status code "unauthorized"
-
-	Scenario: request id malformed
-		When an invalid update <%= name %> request is received
-		Then respond with error message, "Malformed request."
+	Scenario: request malformed, return error
+		When <%= name %> update request is received
+		Then respond with error message "Malformed request."
 			And http status code "bad request"
