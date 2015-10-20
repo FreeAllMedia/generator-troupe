@@ -22,11 +22,16 @@ module.exports = yeoman.generators.Base.extend({
 			name: "name",
 			message: "What is the model name? (use camel case please)",
 			default: "myModel"
+		},
+		{
+			type: "input",
+			name: "attributeString",
+			message: "Provide the model attributes sepparated by a comma? (like name,link,email,contactPhone)",
+			default: "name"
 		}];
 
 		this.prompt(prompts, function (props) {
 			this.props = props;
-
 			done();
 		}.bind(this));
 	},
@@ -36,8 +41,31 @@ module.exports = yeoman.generators.Base.extend({
 			name: this.props.name,
 			Name: inflect(this.props.name).pascal.toString(),
 			names: inflect(this.props.name).plural.toString(),
-			_name: inflect(this.props.name).snake.toString()
+			_name: inflect(this.props.name).snake.toString(),
+			attributes: this.props.attributes,
+			attributeString: this.props.attributeString
 		};
+
+		context.attributes = context.attributeString.split(",");
+
+		//filling a strings that are going to be used in the templates to mock a test entity
+		context.attributesWithValues = "";
+		context.fieldsWithValues = "";
+		context.validateString = "";
+		context.attributes.forEach(
+			(attributeName, index) => {
+				if(index > 0) {
+					const breakLine = ",\n";
+					context.attributesWithValues += breakLine;
+					context.fieldsWithValues += breakLine;
+					context.validateString += breakLine;
+				}
+				const snakeAttributeName = inflect(attributeName).snake.toString();
+				context.attributesWithValues += `\"${attributeName}\": \"test ${attributeName}\"`;
+				context.fieldsWithValues += `\"${snakeAttributeName}\": ${context.name}.${attributeName}`;
+				context.validateString += `this.ensure(\"${attributeName}\", isNotEmpty);`;
+			});
+		context.attributesJson = JSON.stringify(context.attributesWithValues);
 
 		//copy feature steps
 		["_model.show.steps.js",
@@ -62,6 +90,20 @@ module.exports = yeoman.generators.Base.extend({
 			this.fs.copyTpl(
 				this.templatePath(`es6/features/steps/${templatePath}`),
 				this.destinationPath(`es6/features/steps/${newName}`),
+				context
+			);
+		}, this);
+
+		//copy common functions
+		["_jsonWebToken.js",
+		"_language.js",
+		"_request.js",
+		"_values.js"]
+		.forEach((templatePath) => {
+			let newName = templatePath.replace("_", "");
+			this.fs.copyTpl(
+				this.templatePath(`es6/features/steps/common/${templatePath}`),
+				this.destinationPath(`es6/features/steps/common/${newName}`),
 				context
 			);
 		}, this);

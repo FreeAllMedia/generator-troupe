@@ -26,11 +26,15 @@ module.exports = yeoman.generators.Base.extend({
 			name: "name",
 			message: "What is the model name? (use camel case please)",
 			"default": "myModel"
+		}, {
+			type: "input",
+			name: "attributeString",
+			message: "Provide the model attributes sepparated by a comma? (like name,link,email,contactPhone)",
+			"default": "name"
 		}];
 
 		this.prompt(prompts, (function (props) {
 			this.props = props;
-
 			done();
 		}).bind(this));
 	},
@@ -42,8 +46,30 @@ module.exports = yeoman.generators.Base.extend({
 			name: this.props.name,
 			Name: (0, _jargon2["default"])(this.props.name).pascal.toString(),
 			names: (0, _jargon2["default"])(this.props.name).plural.toString(),
-			_name: (0, _jargon2["default"])(this.props.name).snake.toString()
+			_name: (0, _jargon2["default"])(this.props.name).snake.toString(),
+			attributes: this.props.attributes,
+			attributeString: this.props.attributeString
 		};
+
+		context.attributes = context.attributeString.split(",");
+
+		//filling a strings that are going to be used in the templates to mock a test entity
+		context.attributesWithValues = "";
+		context.fieldsWithValues = "";
+		context.validateString = "";
+		context.attributes.forEach(function (attributeName, index) {
+			if (index > 0) {
+				var breakLine = ",\n";
+				context.attributesWithValues += breakLine;
+				context.fieldsWithValues += breakLine;
+				context.validateString += breakLine;
+			}
+			var snakeAttributeName = (0, _jargon2["default"])(attributeName).snake.toString();
+			context.attributesWithValues += "\"" + attributeName + "\": \"test " + attributeName + "\"";
+			context.fieldsWithValues += "\"" + snakeAttributeName + "\": " + context.name + "." + attributeName;
+			context.validateString += "this.ensure(\"" + attributeName + "\", isNotEmpty);";
+		});
+		context.attributesJson = JSON.stringify(context.attributesWithValues);
 
 		//copy feature steps
 		["_model.show.steps.js", "_model.create.steps.js", "_model.update.steps.js", "_model.delete.steps.js", "_model.list.steps.js"].forEach(function (templatePath) {
@@ -55,6 +81,12 @@ module.exports = yeoman.generators.Base.extend({
 		["_common.steps.js", "_accessToken.steps.js"].forEach(function (templatePath) {
 			var newName = templatePath.replace("_", "");
 			_this.fs.copyTpl(_this.templatePath("es6/features/steps/" + templatePath), _this.destinationPath("es6/features/steps/" + newName), context);
+		}, this);
+
+		//copy common functions
+		["_jsonWebToken.js", "_language.js", "_request.js", "_values.js"].forEach(function (templatePath) {
+			var newName = templatePath.replace("_", "");
+			_this.fs.copyTpl(_this.templatePath("es6/features/steps/common/" + templatePath), _this.destinationPath("es6/features/steps/common/" + newName), context);
 		}, this);
 
 		//copy support files

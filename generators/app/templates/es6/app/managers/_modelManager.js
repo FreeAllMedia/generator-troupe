@@ -14,9 +14,9 @@ function clean(object) {
 
 function extractAttributes(attributes) {
 	let {
-		name //TODO: add attributes
-  } = attributes;
-	return clean({name}); //TODO: add attributes
+		<%= attributeString %>
+	} = attributes;
+	return clean({<%= attributeString %>});
 }
 
 export function get<%= Name %>sByAccountId(accountId, callback) {
@@ -32,6 +32,17 @@ export function get<%= Name %>s(callback) {
 		.find
 		.all
 		.results(callback);
+}
+
+export function getAccountIdFrom<%= Name %>Id(id, callback) {
+	<%= Name %>
+		.find
+		.one
+		.where("id", id)
+		.results((error, result) => {
+			//TODO: took the account id from the proper place
+			callback(error, result.accountId);
+		});
 }
 
 export function get<%= Name %>ById(id, callback) {
@@ -90,7 +101,7 @@ export function update<%= Name %>(id, attributes, callback) {
 
 export function create<%= Name %>(attributes, callback) {
 	const newEntityAttributes = extractAttributes(attributes);
-  const newEntity = new <%= Name %>(newEntityAttributes);
+	const newEntity = new <%= Name %>(newEntityAttributes);
 
 	newEntity.save((saveError) => {
 		callback(saveError, newEntity);
