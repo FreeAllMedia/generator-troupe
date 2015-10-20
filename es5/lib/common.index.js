@@ -71,34 +71,40 @@ module.exports = yeoman.generators.Base.extend({
 		});
 		context.attributesJson = JSON.stringify(context.attributesWithValues);
 
-		//copy feature steps
-		["_model.show.steps.js", "_model.create.steps.js", "_model.update.steps.js", "_model.delete.steps.js", "_model.list.steps.js"].forEach(function (templatePath) {
-			var newName = templatePath.replace("_model", "" + context.name);
-			_this.fs.copyTpl(_this.templatePath("es6/features/steps/" + templatePath), _this.destinationPath("es6/features/steps/" + context.name + "/" + newName), context);
+		//copy common steps
+		["_common.steps.js", "_accessToken.steps.js"].forEach(function (templatePath) {
+			var newName = templatePath.replace("_", "");
+			_this.fs.copyTpl(_this.templatePath("es6/features/steps/" + templatePath), _this.destinationPath("es6/features/steps/" + newName), context);
+		}, this);
+
+		//copy common functions
+		["_jsonWebToken.js", "_language.js", "_request.js", "_values.js"].forEach(function (templatePath) {
+			var newName = templatePath.replace("_", "");
+			_this.fs.copyTpl(_this.templatePath("es6/features/steps/common/" + templatePath), _this.destinationPath("es6/features/steps/common/" + newName), context);
+		}, this);
+
+		//copy support files
+		["_hooks.js", "_world.js"].forEach(function (templatePath) {
+			var newName = templatePath.replace("_", "");
+			_this.fs.copyTpl(_this.templatePath("es6/features/support/" + templatePath), _this.destinationPath("es6/features/support/" + newName), context);
 		}, this);
 
 		//copy controllers
-		["_modelController.js"].forEach(function (templatePath) {
+		["_applicationController.js"].forEach(function (templatePath) {
 			var newName = templatePath.replace("_model", "" + context.name).replace("_", "");
 			_this.fs.copyTpl(_this.templatePath("es6/app/controllers/" + templatePath), _this.destinationPath("es6/app/controllers/" + newName), context);
 		}, this);
 
 		//copy managers
-		["_modelManager.js"].forEach(function (templatePath) {
+		["_accountManager.js"].forEach(function (templatePath) {
 			var newName = templatePath.replace("_model", "" + context.name).replace("_", "");
 			_this.fs.copyTpl(_this.templatePath("es6/app/managers/" + templatePath), _this.destinationPath("es6/app/managers/" + newName), context);
 		}, this);
 
-		//copy model
-		this.fs.copyTpl(this.templatePath("es6/app/models/_model.js"), this.destinationPath("es6/app/models/" + context.name + ".js"), context);
-
-		//copy model spec
-		this.fs.copyTpl(this.templatePath("es6/spec/_model.spec.js"), this.destinationPath("es6/spec/" + context.name + ".spec.js"), context);
-
-		//copy routers
-		["_modelRouter.js", "_modelRoutes.js"].forEach(function (templatePath) {
-			var newName = templatePath.replace("_model", "" + context.name).replace("_", "");
-			_this.fs.copyTpl(_this.templatePath("es6/app/routers/" + templatePath), _this.destinationPath("es6/app/routers/" + newName), context);
+		//copy misc
+		["_errors.js", "_server.js"].forEach(function (templatePath) {
+			var newName = templatePath.replace("_", "");
+			_this.fs.copyTpl(_this.templatePath("es6/app/" + templatePath), _this.destinationPath("es6/app/" + newName), context);
 		}, this);
 	},
 

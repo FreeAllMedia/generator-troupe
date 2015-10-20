@@ -11,7 +11,8 @@ describe("troupe:features", function () {
 	before(function (done) {
 		name = "model";
 		helpers.run(path.join(__dirname, "../../generators/features")).inDir(path.join(os.tmpdir(), "./temp-test")).withOptions({ "skip-install": true }).withPrompts({
-			name: name
+			name: name,
+			attributes: "name"
 		}).on("end", done);
 	});
 

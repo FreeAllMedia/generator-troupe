@@ -17,11 +17,7 @@ describe("troupe", function () {
 	});
 
 	it("creates cucumber js files", function () {
-		assert.file(["es6/features/steps/" + name + "/" + name + ".show.steps.js", "es6/features/steps/" + name + "/" + name + ".create.steps.js", "es6/features/steps/" + name + "/" + name + ".update.steps.js", "es6/features/steps/" + name + "/" + name + ".delete.steps.js", "es6/features/steps/" + name + "/" + name + ".list.steps.js", "es6/features/steps/common/jsonWebToken.js", "es6/features/steps/common/language.js", "es6/features/steps/common/request.js", "es6/features/steps/common/values.js", "es6/features/steps/accessToken.steps.js", "es6/features/support/hooks.js", "es6/features/support/world.js"]);
-	});
-
-	it("creates a common step file", function () {
-		assert.file(["es6/features/steps/common.steps.js"]);
+		assert.file(["es6/features/steps/" + name + "/" + name + ".show.steps.js", "es6/features/steps/" + name + "/" + name + ".create.steps.js", "es6/features/steps/" + name + "/" + name + ".update.steps.js", "es6/features/steps/" + name + "/" + name + ".delete.steps.js", "es6/features/steps/" + name + "/" + name + ".list.steps.js"]);
 	});
 
 	it("creates the model and his spec", function () {
@@ -29,19 +25,15 @@ describe("troupe", function () {
 	});
 
 	it("creates the controllers", function () {
-		assert.file(["es6/app/controllers/" + name + "Controller.js", "es6/app/controllers/applicationController.js"]);
+		assert.file(["es6/app/controllers/" + name + "Controller.js"]);
 	});
 
 	it("creates the managers", function () {
-		assert.file(["es6/app/managers/" + name + "Manager.js", "es6/app/managers/accountManager.js"]);
+		assert.file(["es6/app/managers/" + name + "Manager.js"]);
 	});
 
 	it("creates the router", function () {
 		assert.file(["es6/app/routers/" + name + "Router.js", "es6/app/routers/" + name + "Routes.js"]);
-	});
-
-	it("creates misc files", function () {
-		assert.file(["es6/app/errors.js", "es6/app/server.js"]);
 	});
 
 	describe("(about the content of every feature)", function () {

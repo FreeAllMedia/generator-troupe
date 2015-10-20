@@ -12,7 +12,8 @@ describe("troupe:features", () => {
 			.inDir(path.join(os.tmpdir(), "./temp-test"))
 			.withOptions({ "skip-install": true })
 			.withPrompts({
-				name: name
+				name: name,
+				attributes: "name"
 			})
 			.on("end", done);
 	});
