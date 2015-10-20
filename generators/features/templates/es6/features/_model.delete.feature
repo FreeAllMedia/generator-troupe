@@ -1,36 +1,32 @@
-Feature: Delete an existing <%= Name %>
+Feature: delete a <%= name %>
 
-	Scenario: client access token is valid, authorized, and <%= name %> exists
-		Given client access token is valid
-			#And client access token is authorized
-			And <%= name %> is found
-		When a valid delete <%= name %> request is received
-		Then respond with http status code "no content"
-			And the "delete" query was executed
+	Scenario: valid user delete a valid <%= name %>; return no content
+		Given a valid token
+		When <%= name %> delete request is received
+			And all the business logic has completed
+		Then respond with no content
+			And http status code "no content"
 
-	Scenario: client access token is valid, authorized, but <%= name %> does not exist
-		Given client access token is valid
-			#And client access token is authorized
-			And <%= name %> is not found
-		When a valid delete <%= name %> request is received
-		Then respond with error message, "There is no <%= Name %> for the given (id)."
+	Scenario: valid admin delete a <%= name %>; return no content
+		Given a valid admin token
+		When <%= name %> delete request is received
+			And all the business logic has completed
+		Then respond with no content
+			And http status code "no content"
+
+	Scenario: access token is valid, but there is no <%= name %> found
+		Given a valid token
+		When an invalid <%= name %> delete request is received
+		Then respond with error message title, "Not Found"
 			And http status code "not found"
 
-	# Scenario: client access token is valid and unauthorized, return error
-
-	Scenario: client access token is invalid
-		Given client access token is invalid
-		When a valid delete <%= name %> request is received
-		Then respond with error message, "The client access token provided is invalid."
-			And http status code "unauthorized"
-
-	Scenario: client access token is valid but expired, return error
-		Given client access token is expired
-		When a valid delete <%= name %> request is received
-		Then respond with error message, "The client access token provided is expired."
-			And http status code "unauthorized"
+	Scenario: access token is valid admin, but there is no <%= name %> found
+		Given a valid admin token
+		When an invalid <%= name %> delete request is received
+		Then respond with error message title, "Not Found"
+			And http status code "not found"
 
 	Scenario: request malformed, return error
-		When an invalid delete <%= name %> request is received
-		Then respond with error message, "Malformed request."
+		When <%= name %> delete request is received
+		Then respond with error message "Malformed request."
 			And http status code "bad request"

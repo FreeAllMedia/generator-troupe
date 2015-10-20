@@ -42,7 +42,18 @@ module.exports = yeoman.generators.Base.extend({
 			let newName = templatePath.replace("_model", `${context.name}`);
 			this.fs.copyTpl(
 				this.templatePath("es6/features/" + templatePath),
-				this.destinationPath(`es6/features/${context.name}/${newName}`),
+				this.destinationPath(`features/${context.name}/${newName}`),
+				context
+			);
+		}, this);
+
+		//copy access token feature
+		["_accessToken.feature"]
+		.forEach((templatePath) => {
+			let newName = templatePath.replace("_", "");
+			this.fs.copyTpl(
+				this.templatePath("es6/features/" + templatePath),
+				this.destinationPath(`features/${newName}`),
 				context
 			);
 		}, this);
