@@ -25,19 +25,6 @@ describe("troupe", () => {
 			`es6/features/steps/${name}/${name}.update.steps.js`,
 			`es6/features/steps/${name}/${name}.delete.steps.js`,
 			`es6/features/steps/${name}/${name}.list.steps.js`,
-			`es6/features/steps/common/jsonWebToken.js`,
-			`es6/features/steps/common/language.js`,
-			`es6/features/steps/common/request.js`,
-			`es6/features/steps/common/values.js`,
-			`es6/features/steps/accessToken.steps.js`,
-			`es6/features/support/hooks.js`,
-			`es6/features/support/world.js`
-		]);
-	});
-
-	it("creates a common step file", () => {
-		assert.file([
-			`es6/features/steps/common.steps.js`
 		]);
 	});
 
@@ -50,15 +37,13 @@ describe("troupe", () => {
 
 	it("creates the controllers", () => {
 		assert.file([
-			`es6/app/controllers/${name}Controller.js`,
-			`es6/app/controllers/applicationController.js`
+			`es6/app/controllers/${name}Controller.js`
 		]);
 	});
 
 	it("creates the managers", () => {
 		assert.file([
-			`es6/app/managers/${name}Manager.js`,
-			`es6/app/managers/accountManager.js`
+			`es6/app/managers/${name}Manager.js`
 		]);
 	});
 
@@ -66,13 +51,6 @@ describe("troupe", () => {
 		assert.file([
 			`es6/app/routers/${name}Router.js`,
 			`es6/app/routers/${name}Routes.js`
-		]);
-	});
-
-	it("creates misc files", () => {
-		assert.file([
-			`es6/app/errors.js`,
-			`es6/app/server.js`
 		]);
 	});
 
