@@ -16,10 +16,6 @@ describe("troupe", function () {
 		}).on("end", done);
 	});
 
-	it("creates cucumber js files", function () {
-		assert.file(["es6/features/steps/" + name + "/" + name + ".show.steps.js", "es6/features/steps/" + name + "/" + name + ".create.steps.js", "es6/features/steps/" + name + "/" + name + ".update.steps.js", "es6/features/steps/" + name + "/" + name + ".delete.steps.js", "es6/features/steps/" + name + "/" + name + ".list.steps.js"]);
-	});
-
 	it("creates the model and his spec", function () {
 		assert.file(["es6/app/models/" + name + ".js", "es6/spec/" + name + ".spec.js"]);
 	});
@@ -37,10 +33,6 @@ describe("troupe", function () {
 	});
 
 	describe("(about the content of every feature)", function () {
-		it("should have some this.database = on it", function () {
-			assert.fileContent([["es6/features/steps/" + name + "/" + name + ".show.steps.js", "this.database"]]);
-		});
-
 		describe("(controller content)", function () {
 			it("should have filters for validation", function () {
 				assert.fileContent([["es6/app/controllers/" + name + "Controller.js", "filters()"], ["es6/app/controllers/" + name + "Controller.js", "[pullAccountIdFromRequest]"]]);

@@ -1,10 +1,6 @@
 "use strict";
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var _jargon = require("jargon");
-
-var _jargon2 = _interopRequireDefault(_jargon);
+var _commonJs = require("./common.js");
 
 var yeoman = require("yeoman-generator");
 var chalk = require("chalk");
@@ -21,17 +17,7 @@ module.exports = yeoman.generators.Base.extend({
 		// Have Yeoman greet the user.
 		this.log(yosay("Welcome to the stylish " + chalk.red("FamScudl") + " generator! our base path is " + this.destinationRoot()));
 
-		var prompts = [{
-			type: "input",
-			name: "name",
-			message: "What is the model name? (use camel case please)",
-			"default": "myModel"
-		}, {
-			type: "input",
-			name: "attributeString",
-			message: "Provide the model attributes sepparated by a comma? (like name,link,email,contactPhone)",
-			"default": "name"
-		}];
+		var prompts = (0, _commonJs.getPrompts)();
 
 		this.prompt(prompts, (function (props) {
 			this.props = props;
@@ -42,34 +28,7 @@ module.exports = yeoman.generators.Base.extend({
 	writing: function yoWriting() {
 		var _this = this;
 
-		var context = {
-			name: this.props.name,
-			Name: (0, _jargon2["default"])(this.props.name).pascal.toString(),
-			names: (0, _jargon2["default"])(this.props.name).plural.toString(),
-			_name: (0, _jargon2["default"])(this.props.name).snake.toString(),
-			attributes: this.props.attributes,
-			attributeString: this.props.attributeString
-		};
-
-		context.attributes = context.attributeString.split(",");
-
-		//filling a strings that are going to be used in the templates to mock a test entity
-		context.attributesWithValues = "";
-		context.fieldsWithValues = "";
-		context.validateString = "";
-		context.attributes.forEach(function (attributeName, index) {
-			if (index > 0) {
-				var breakLine = ",\n";
-				context.attributesWithValues += breakLine;
-				context.fieldsWithValues += breakLine;
-				context.validateString += breakLine;
-			}
-			var snakeAttributeName = (0, _jargon2["default"])(attributeName).snake.toString();
-			context.attributesWithValues += "\"" + attributeName + "\": \"test " + attributeName + "\"";
-			context.fieldsWithValues += "\"" + snakeAttributeName + "\": " + context.name + "." + attributeName;
-			context.validateString += "this.ensure(\"" + attributeName + "\", isNotEmpty);";
-		});
-		context.attributesJson = JSON.stringify(context.attributesWithValues);
+		var context = (0, _commonJs.processContext)(this.props);
 
 		//copy common steps
 		["_common.steps.js", "_accessToken.steps.js"].forEach(function (templatePath) {

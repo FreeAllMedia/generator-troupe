@@ -1,10 +1,6 @@
 "use strict";
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var _jargon = require("jargon");
-
-var _jargon2 = _interopRequireDefault(_jargon);
+var _commonJs = require("./common.js");
 
 var yeoman = require("yeoman-generator");
 
@@ -16,12 +12,7 @@ module.exports = yeoman.generators.Base.extend({
 	prompting: function yoPrompt() {
 		var done = this.async();
 
-		var prompts = [{
-			type: "input",
-			name: "name",
-			message: "What is the model name? (use camel case please)",
-			"default": "myModel"
-		}];
+		var prompts = (0, _commonJs.getPrompts)();
 
 		this.prompt(prompts, (function (props) {
 			this.props = props;
@@ -33,23 +24,24 @@ module.exports = yeoman.generators.Base.extend({
 	writing: function yoWriting() {
 		var _this = this;
 
-		var context = {
-			name: this.props.name,
-			Name: (0, _jargon2["default"])(this.props.name).pascal.toString(),
-			names: (0, _jargon2["default"])(this.props.name).plural.toString(),
-			_name: (0, _jargon2["default"])(this.props.name).snake.toString()
-		};
+		var context = (0, _commonJs.processContext)(this.props);
+
+		//copy feature steps
+		["_model.show.steps.js", "_model.create.steps.js", "_model.update.steps.js", "_model.delete.steps.js", "_model.list.steps.js"].forEach(function (templatePath) {
+			var newName = templatePath.replace("_model", "" + context.name);
+			_this.fs.copyTpl(_this.templatePath("es6/features/steps/" + templatePath), _this.destinationPath("es6/features/steps/" + context.name + "/" + newName), context);
+		}, this);
 
 		//copy features
 		["_model.show.feature", "_model.create.feature", "_model.update.feature", "_model.delete.feature", "_model.list.feature"].forEach(function (templatePath) {
 			var newName = templatePath.replace("_model", "" + context.name);
-			_this.fs.copyTpl(_this.templatePath("es6/features/" + templatePath), _this.destinationPath("features/" + context.name + "/" + newName), context);
+			_this.fs.copyTpl(_this.templatePath("features/" + templatePath), _this.destinationPath("features/" + context.name + "/" + newName), context);
 		}, this);
 
 		//copy access token feature
 		["_accessToken.feature"].forEach(function (templatePath) {
 			var newName = templatePath.replace("_", "");
-			_this.fs.copyTpl(_this.templatePath("es6/features/" + templatePath), _this.destinationPath("features/" + newName), context);
+			_this.fs.copyTpl(_this.templatePath("features/" + templatePath), _this.destinationPath("features/" + newName), context);
 		}, this);
 	},
 

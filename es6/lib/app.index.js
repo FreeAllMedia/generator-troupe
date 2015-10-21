@@ -2,7 +2,7 @@ var yeoman = require("yeoman-generator");
 var chalk = require("chalk");
 var yosay = require("yosay");
 
-import inflect from "jargon";
+import {processContext, getPrompts} from "./common.js";
 
 module.exports = yeoman.generators.Base.extend({
 	initializing: function yoInitializing() {
@@ -17,18 +17,7 @@ module.exports = yeoman.generators.Base.extend({
 			"Welcome to the stylish " + chalk.red("FamScudl") + " generator! our base path is " + this.destinationRoot()
 		));
 
-		var prompts = [{
-			type: "input",
-			name: "name",
-			message: "What is the model name? (use camel case please)",
-			default: "myModel"
-		},
-		{
-			type: "input",
-			name: "attributeString",
-			message: "Provide the model attributes sepparated by a comma? (like name,link,email,contactPhone)",
-			default: "name"
-		}];
+		var prompts = getPrompts();
 
 		this.prompt(prompts, function (props) {
 			this.props = props;
@@ -37,50 +26,7 @@ module.exports = yeoman.generators.Base.extend({
 	},
 
 	writing: function yoWriting() {
-		const context = {
-			name: this.props.name,
-			Name: inflect(this.props.name).pascal.toString(),
-			names: inflect(this.props.name).plural.toString(),
-			_name: inflect(this.props.name).snake.toString(),
-			attributes: this.props.attributes,
-			attributeString: this.props.attributeString
-		};
-
-		context.attributes = context.attributeString.split(",");
-
-		//filling a strings that are going to be used in the templates to mock a test entity
-		context.attributesWithValues = "";
-		context.fieldsWithValues = "";
-		context.validateString = "";
-		context.attributes.forEach(
-			(attributeName, index) => {
-				if(index > 0) {
-					const breakLine = ",\n";
-					context.attributesWithValues += breakLine;
-					context.fieldsWithValues += breakLine;
-					context.validateString += breakLine;
-				}
-				const snakeAttributeName = inflect(attributeName).snake.toString();
-				context.attributesWithValues += `\"${attributeName}\": \"test ${attributeName}\"`;
-				context.fieldsWithValues += `\"${snakeAttributeName}\": ${context.name}.${attributeName}`;
-				context.validateString += `this.ensure(\"${attributeName}\", isNotEmpty);`;
-			});
-		context.attributesJson = JSON.stringify(context.attributesWithValues);
-
-		//copy feature steps
-		["_model.show.steps.js",
-		"_model.create.steps.js",
-		"_model.update.steps.js",
-		"_model.delete.steps.js",
-		"_model.list.steps.js"]
-		.forEach((templatePath) => {
-			let newName = templatePath.replace("_model", `${context.name}`);
-			this.fs.copyTpl(
-				this.templatePath("es6/features/steps/" + templatePath),
-				this.destinationPath(`es6/features/steps/${context.name}/${newName}`),
-				context
-			);
-		}, this);
+		const context = processContext(this.props);
 
 		//copy controllers
 		["_modelController.js"]

@@ -3,7 +3,7 @@ const assert = require("yeoman-generator").assert;
 const helpers = require("yeoman-generator").test;
 const os = require("os");
 
-describe("troupe", () => {
+describe("troupe:common", () => {
 	let name;
 
 	before((done) => {
@@ -18,7 +18,7 @@ describe("troupe", () => {
 			.on("end", done);
 	});
 
-	it("creates cucumber js files", () => {
+	it("creates common cucumber js files", () => {
 		assert.file([
 			`es6/features/steps/common/jsonWebToken.js`,
 			`es6/features/steps/common/language.js`,
@@ -30,25 +30,25 @@ describe("troupe", () => {
 		]);
 	});
 
-	it("creates a common step file", () => {
+	it("creates a common steps file", () => {
 		assert.file([
 			`es6/features/steps/common.steps.js`
 		]);
 	});
 
-	it("creates the controllers", () => {
+	it("creates the common controllers", () => {
 		assert.file([
 			`es6/app/controllers/applicationController.js`
 		]);
 	});
 
-	it("creates the managers", () => {
+	it("creates the common manager", () => {
 		assert.file([
 			`es6/app/managers/accountManager.js`
 		]);
 	});
 
-	it("creates misc files", () => {
+	it("creates other common files", () => {
 		assert.file([
 			`es6/app/errors.js`,
 			`es6/app/server.js`
