@@ -33,18 +33,9 @@ export default class <%= Name %>Controller extends ApplicationController {
 	//pulls out the <%= name %> from the database and get the account id from it
 	//TODO: fix according to the entity needs
 	[pullAccountIdFrom<%= Name %>] (request, response, next) {
-		getAccountIdFrom<%= Name %>Id(request.params.id,
-			(findError, accountId) => {
-					if(findError) {
-						response.internalServerError(findError);
-					} else if(accountId > 0) {
-						request.accountId = accountId;
-						next();
-					} else {
-						response.notFound(new NotFoundError());
-					}
-				}
-			);
+		request.accountId = 1;
+		response.notImplemented(new Error());
+		next();
 	}
 
 	show(request, response) {

@@ -1,5 +1,4 @@
-import Model from "dovima";
-import {isNotEmpty} from "proven";
+import Model, {isNotEmpty, areOnlyAttributes} from "dovima";
 
 export default class <%= Name %> extends Model {
 
@@ -8,6 +7,8 @@ export default class <%= Name %> extends Model {
 	//TODO: complete validate and initialize
 	validate() {
 		<%- validateString %>
+
+		<%- validateAttributesString %>
 	}
 
 }

@@ -13,21 +13,18 @@ export function processContext(props) {
   //filling a strings that are going to be used in the templates to mock a test entity
   context.attributesWithValues = "";
   context.fieldsWithValues = "";
-  context.validateString = "";
-  context.extractAttributesString = "";
+  context.validateString = `this.ensure(${context.attributes.join(", isNotEmpty);\n\t\tthis.ensure(")}, isNotEmpty);`;
+  context.extractAttributesString = `${context.attributes.join(",\n\t\t")}`;
+  context.validateAttributesString = `this.ensure(["${context.attributes.join("\",\n\t\t\t\"")}"], areOnlyAttributes);`;
   context.attributes.forEach(
     (attributeName, index) => {
       if(index > 0) {
         context.attributesWithValues += `,\n\t`;
         context.fieldsWithValues += `,\n\t\t\t\t`;
-        context.validateString += `\n\t\t`;
-        context.extractAttributesString += `,\n\t\t`;
       }
       const snakeAttributeName = inflect(attributeName).snake.toString();
       context.attributesWithValues += `\"${attributeName}\": \"test ${attributeName}\"`;
       context.fieldsWithValues += `\"${snakeAttributeName}\": ${context.name}.${attributeName}`;
-      context.extractAttributesString += `${attributeName}`;
-      context.validateString += `this.ensure(\"${attributeName}\", isNotEmpty);`;
     });
   context.attributesJson = JSON.stringify(context.attributesWithValues);
   return context;
