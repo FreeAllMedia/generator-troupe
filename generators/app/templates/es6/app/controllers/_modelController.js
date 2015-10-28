@@ -17,18 +17,21 @@ export default class <%= Name %>Controller extends ApplicationController {
 	}
 
 	//pulls the account id on which the user is trying to create the <%= name %> from the request body
+	//TODO: fix according to the entity needs
 	[pullAccountIdFromRequest] (request, response, next) {
 		request.accountId = request.body.data.accountId;
 		next();
 	}
 
 	//pulls the account id
+	//TODO: fix according to the entity needs
 	[pullAccountIdFromUrl] (request, response, next) {
 		request.accountId = request.params.id;
 		next();
 	}
 
 	//pulls out the <%= name %> from the database and get the account id from it
+	//TODO: fix according to the entity needs
 	[pullAccountIdFrom<%= Name %>] (request, response, next) {
 		getAccountIdFrom<%= Name %>Id(request.params.id,
 			(findError, accountId) => {

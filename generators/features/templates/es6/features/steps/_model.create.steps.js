@@ -17,14 +17,15 @@ const invalid<%= Name %> = {
 export default function <%= Name %>CreateSteps() {
 	this.When(/^<%= name %> create request is received$/, function (callback) {
 		//load query mocks
+		//TODO: add mocks according to your needs
 		this.database
 			.mock
 			.insert({
 				"created_at": dateRegex,
 				<%- fieldsWithValues %>
 			})
-			.into("<%= name %>s")
-			.results(1);
+			.into("<%= _name %>s")
+			.results([1]);
 		//make request
 		this.body = {data: <%= name %>};
 		makeRequest.call(this, "/<%= name %>", "post",

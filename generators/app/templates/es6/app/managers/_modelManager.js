@@ -14,9 +14,9 @@ function clean(object) {
 
 function extractAttributes(attributes) {
 	let {
-		<%= attributeString %>
+		<%= extractAttributesString %>
 	} = attributes;
-	return clean({<%= attributeString %>});
+	return clean({<%= extractAttributesString %>});
 }
 
 export function get<%= Name %>sByAccountId(accountId, callback) {

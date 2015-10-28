@@ -17,10 +17,11 @@ const invalid<%= Name %> = {
 export default function <%= Name %>UpdateSteps() {
 	this.When(/^<%= name %> update request is received$/, function (callback) {
 		//load query mocks
+		//TODO: add mocks according to your needs
 		this.database
 			.mock
 			.select("*")
-			.from("<%= name %>s")
+			.from("<%= _name %>s")
 			.whereNull("deleted_at")
 			.andWhere("id", 1)
 			.limit(1)
@@ -34,7 +35,7 @@ export default function <%= Name %>UpdateSteps() {
 					"updated_at": dateRegex,
 					<%- attributesWithValues %>
 				})
-				.into("<%= name %>s")
+				.into("<%= _name %>s")
 				.where("id", "=", 1)
 				.results(1);
 		//make request
@@ -47,11 +48,12 @@ export default function <%= Name %>UpdateSteps() {
 
 	this.When(/^an invalid <%= name %> update request is received$/, function (callback) {
 		//prepare request body
+		//TODO: add mocks according to your needs
 		this.body = {data: invalid<%= Name %>};
 		this.database
 			.mock
 			.select("*")
-			.from("<%= name %>s")
+			.from("<%= _name %>s")
 			.whereNull("deleted_at")
 			.andWhere("id", 1)
 			.limit(1)
@@ -65,11 +67,12 @@ export default function <%= Name %>UpdateSteps() {
 
 	this.When(/^an unexisting <%= name %> update request is received$/, function (callback) {
 		//prepare request body
+		//TODO: add mocks according to your needs
 		this.body = {data: invalid<%= Name %>};
 		this.database
 			.mock
 			.select("*")
-			.from("<%= name %>s")
+			.from("<%= _name %>s")
 			.whereNull("deleted_at")
 			.andWhere("id", 1)
 			.limit(1)

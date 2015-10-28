@@ -14,17 +14,19 @@ export function processContext(props) {
   context.attributesWithValues = "";
   context.fieldsWithValues = "";
   context.validateString = "";
+  context.extractAttributesString = "";
   context.attributes.forEach(
     (attributeName, index) => {
       if(index > 0) {
-        const breakLine = ",\n";
-        context.attributesWithValues += breakLine;
-        context.fieldsWithValues += breakLine;
-        context.validateString += breakLine;
+        context.attributesWithValues += `,\n\t`;
+        context.fieldsWithValues += `,\n\t\t\t\t`;
+        context.validateString += `\n\t\t`;
+        context.extractAttributesString += `,\n\t\t`;
       }
       const snakeAttributeName = inflect(attributeName).snake.toString();
       context.attributesWithValues += `\"${attributeName}\": \"test ${attributeName}\"`;
       context.fieldsWithValues += `\"${snakeAttributeName}\": ${context.name}.${attributeName}`;
+      context.extractAttributesString += `${attributeName}`;
       context.validateString += `this.ensure(\"${attributeName}\", isNotEmpty);`;
     });
   context.attributesJson = JSON.stringify(context.attributesWithValues);

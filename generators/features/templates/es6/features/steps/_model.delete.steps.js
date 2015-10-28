@@ -10,13 +10,14 @@ const <%= name %> = {
 	"name": "test <%= name %>"
 };
 
-export default function <%= Name %>UpdateSteps() {
+export default function <%= Name %>DeleteSteps() {
 	this.When(/^<%= name %> delete request is received$/, function (callback) {
 		//load query mocks
+		//TODO: add mocks according to your needs
 		this.database
 			.mock
 			.select("*")
-			.from("<%= name %>s")
+			.from("<%= _name %>s")
 			.whereNull("deleted_at")
 			.andWhere("id", 1)
 			.limit(1)
@@ -30,7 +31,7 @@ export default function <%= Name %>UpdateSteps() {
 				"updated_at": dateRegex,
 				<%- fieldsWithValues %>
 			})
-			.into("<%= name %>s")
+			.into("<%= _name %>s")
 			.where("id", 1)
 			.results(1);
 		//make request
@@ -45,10 +46,11 @@ export default function <%= Name %>UpdateSteps() {
 		//prepare request body
 		this.body = {data: <%= name %>};
 		//load query mocks
+		//TODO: add mocks according to your needs
 		this.database
 			.mock
 			.select("*")
-			.from("<%= name %>s")
+			.from("<%= _name %>s")
 			.whereNull("deleted_at")
 			.andWhere("id", 1)
 			.limit(1)

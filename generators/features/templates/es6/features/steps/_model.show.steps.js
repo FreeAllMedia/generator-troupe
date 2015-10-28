@@ -11,10 +11,11 @@ const <%= name %> = {
 export default function <%= Name %>ShowSteps() {
 	this.When(/^<%= name %> show request is received$/, function (callback) {
 		//load query mocks
+		//TODO: add mocks according to your needs
 		this.database
 			.mock
 			.select("*")
-			.from("<%= name %>s")
+			.from("<%= _name %>s")
 			.whereNull("deleted_at")
 			.andWhere("id", 1)
 			.limit(1)
@@ -28,10 +29,11 @@ export default function <%= Name %>ShowSteps() {
 
 	this.When(/^<%= name %> show request is received but there is no <%= name %> found$/, function (callback) {
 		//load query mocks
+		//TODO: add mocks according to your needs
 		this.database
 			.mock
 			.select("*")
-			.from("<%= name %>s")
+			.from("<%= _name %>s")
 			.whereNull("deleted_at")
 			.andWhere("id", 1)
 			.limit(1)

@@ -16,11 +16,12 @@ const <%= name %>s = [{
 export default function <%= Name %>ListSteps() {
 	this.When(/^<%= name %> list request is received$/, function (callback) {
 		//load query mocks
+		//TODO: add mocks according to your needs
 		this.entityCount = <%= name %>s.length;
 		this.database
 			.mock
 			.select("*")
-			.from("<%= name %>s")
+			.from("<%= _name %>s")
 			.whereNull("deleted_at")
 			.andWhere("account_id", 1)
 			.results(<%= name %>s);
@@ -33,11 +34,12 @@ export default function <%= Name %>ListSteps() {
 
 	this.When(/^<%= name %> list all request is received$/, function (callback) {
 		//load query mocks
+		//TODO: add mocks according to your needs
 		this.entityCount = <%= name %>s.length;
 		this.database
 			.mock
 			.select("*")
-			.from("<%= name %>s")
+			.from("<%= _name %>s")
 			.whereNull("deleted_at")
 			.results(<%= name %>s);
 		//make request
@@ -50,10 +52,11 @@ export default function <%= Name %>ListSteps() {
 
 	this.When(/^<%= name %> list request is received but there is no <%= name %> found$/, function (callback) {
 		//load query mocks
+		//TODO: add mocks according to your needs
 		this.database
 			.mock
 			.select("*")
-			.from("<%= name %>s")
+			.from("<%= _name %>s")
 			.whereNull("deleted_at")
 			.where("account_id", 1)
 			.results([]);
