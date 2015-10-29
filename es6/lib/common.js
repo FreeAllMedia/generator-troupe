@@ -13,7 +13,7 @@ export function processContext(props) {
   //filling a strings that are going to be used in the templates to mock a test entity
   context.attributesWithValues = "";
   context.fieldsWithValues = "";
-  context.validateString = `this.ensure(${context.attributes.join(", isNotEmpty);\n\t\tthis.ensure(")}, isNotEmpty);`;
+  context.validateString = `this.ensure(\"${context.attributes.join("\", isNotEmpty);\n\t\tthis.ensure(\"")}\", isNotEmpty);`;
   context.extractAttributesString = `${context.attributes.join(",\n\t\t")}`;
   context.validateAttributesString = `this.ensure(["${context.attributes.join("\",\n\t\t\t\"")}"], areOnlyAttributes);`;
   context.attributes.forEach(

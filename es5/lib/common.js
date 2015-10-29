@@ -25,18 +25,17 @@ function processContext(props) {
   //filling a strings that are going to be used in the templates to mock a test entity
   context.attributesWithValues = "";
   context.fieldsWithValues = "";
-  context.validateString = "";
+  context.validateString = "this.ensure(\"" + context.attributes.join("\", isNotEmpty);\n\t\tthis.ensure(\"") + "\", isNotEmpty);";
+  context.extractAttributesString = "" + context.attributes.join(",\n\t\t");
+  context.validateAttributesString = "this.ensure([\"" + context.attributes.join("\",\n\t\t\t\"") + "\"], areOnlyAttributes);";
   context.attributes.forEach(function (attributeName, index) {
     if (index > 0) {
-      var breakLine = ",\n";
-      context.attributesWithValues += breakLine;
-      context.fieldsWithValues += breakLine;
-      context.validateString += breakLine;
+      context.attributesWithValues += ",\n\t";
+      context.fieldsWithValues += ",\n\t\t\t\t";
     }
     var snakeAttributeName = (0, _jargon2["default"])(attributeName).snake.toString();
     context.attributesWithValues += "\"" + attributeName + "\": \"test " + attributeName + "\"";
     context.fieldsWithValues += "\"" + snakeAttributeName + "\": " + context.name + "." + attributeName;
-    context.validateString += "this.ensure(\"" + attributeName + "\", isNotEmpty);";
   });
   context.attributesJson = JSON.stringify(context.attributesWithValues);
   return context;

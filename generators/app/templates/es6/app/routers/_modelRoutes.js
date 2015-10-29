@@ -12,14 +12,9 @@ export default function defineRoutes() {
 		.then((request, response) => {
 			<%= name %>Controller.delete(request, response);
 		});
-	this.get("/account/:id/<%= name %>s")
-		.cast("id", Number)
-		.then((request, response) => {
-			<%= name %>Controller.list(request, response);
-		});
 	this.get("/<%= name %>s")
 		.then((request, response) => {
-			<%= name %>Controller.listAll(request, response);
+			<%= name %>Controller.list(request, response);
 		});
 	this.post("/<%= name %>")
 		.then((request, response) => {

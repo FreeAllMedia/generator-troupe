@@ -17,15 +17,11 @@ describe("troupe", function () {
 	});
 
 	it("creates the model and his spec", function () {
-		assert.file(["es6/app/models/" + name + ".js", "es6/spec/" + name + ".spec.js"]);
+		assert.file(["es6/app/models/" + name + ".js", "es6/spec/models/" + name + ".spec.js"]);
 	});
 
 	it("creates the controllers", function () {
 		assert.file(["es6/app/controllers/" + name + "Controller.js"]);
-	});
-
-	it("creates the managers", function () {
-		assert.file(["es6/app/managers/" + name + "Manager.js"]);
 	});
 
 	it("creates the router", function () {

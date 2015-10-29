@@ -21,19 +21,13 @@ describe("troupe", () => {
 	it("creates the model and his spec", () => {
 		assert.file([
 			`es6/app/models/${name}.js`,
-			`es6/spec/${name}.spec.js`
+			`es6/spec/models/${name}.spec.js`
 		]);
 	});
 
 	it("creates the controllers", () => {
 		assert.file([
 			`es6/app/controllers/${name}Controller.js`
-		]);
-	});
-
-	it("creates the managers", () => {
-		assert.file([
-			`es6/app/managers/${name}Manager.js`
 		]);
 	});
 

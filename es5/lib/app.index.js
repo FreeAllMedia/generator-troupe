@@ -36,17 +36,11 @@ module.exports = yeoman.generators.Base.extend({
 			_this.fs.copyTpl(_this.templatePath("es6/app/controllers/" + templatePath), _this.destinationPath("es6/app/controllers/" + newName), context);
 		}, this);
 
-		//copy managers
-		["_modelManager.js"].forEach(function (templatePath) {
-			var newName = templatePath.replace("_model", "" + context.name).replace("_", "");
-			_this.fs.copyTpl(_this.templatePath("es6/app/managers/" + templatePath), _this.destinationPath("es6/app/managers/" + newName), context);
-		}, this);
-
 		//copy model
 		this.fs.copyTpl(this.templatePath("es6/app/models/_model.js"), this.destinationPath("es6/app/models/" + context.name + ".js"), context);
 
 		//copy model spec
-		this.fs.copyTpl(this.templatePath("es6/spec/_model.spec.js"), this.destinationPath("es6/spec/" + context.name + ".spec.js"), context);
+		this.fs.copyTpl(this.templatePath("es6/spec/_model.spec.js"), this.destinationPath("es6/spec/models/" + context.name + ".spec.js"), context);
 
 		//copy routers
 		["_modelRouter.js", "_modelRoutes.js"].forEach(function (templatePath) {
