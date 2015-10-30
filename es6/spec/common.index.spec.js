@@ -42,12 +42,6 @@ describe("troupe:common", () => {
 		]);
 	});
 
-	it("creates the common manager", () => {
-		assert.file([
-			`es6/app/managers/accountManager.js`
-		]);
-	});
-
 	it("creates other common files", () => {
 		assert.file([
 			`es6/app/errors.js`,

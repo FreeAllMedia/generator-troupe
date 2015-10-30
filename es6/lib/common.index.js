@@ -77,17 +77,6 @@ module.exports = yeoman.generators.Base.extend({
 			);
 		}, this);
 
-		//copy managers
-		["_accountManager.js"]
-		.forEach((templatePath) => {
-			let newName = templatePath.replace("_model", `${context.name}`).replace("_", "");
-			this.fs.copyTpl(
-				this.templatePath(`es6/app/managers/${templatePath}`),
-				this.destinationPath(`es6/app/managers/${newName}`),
-				context
-			);
-		}, this);
-
 		//copy misc
 		["_errors.js",
 		"_server.js"]

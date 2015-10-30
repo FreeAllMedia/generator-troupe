@@ -1,4 +1,4 @@
-import Model, {isNotEmpty, areOnlyAttributes} from "dovima";
+import Model, {isNotEmpty, areOnlyProperties} from "dovima";
 
 export default class <%= Name %> extends Model {
 

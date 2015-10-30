@@ -27,7 +27,7 @@ function processContext(props) {
   context.fieldsWithValues = "";
   context.validateString = "this.ensure(\"" + context.attributes.join("\", isNotEmpty);\n\t\tthis.ensure(\"") + "\", isNotEmpty);";
   context.extractAttributesString = "" + context.attributes.join(",\n\t\t");
-  context.validateAttributesString = "this.ensure([\"" + context.attributes.join("\",\n\t\t\t\"") + "\"], areOnlyAttributes);";
+  context.validateAttributesString = "this.ensure([\"" + context.attributes.join("\",\n\t\t\t\"") + "\"], areOnlyProperties);";
   context.attributes.forEach(function (attributeName, index) {
     if (index > 0) {
       context.attributesWithValues += ",\n\t";

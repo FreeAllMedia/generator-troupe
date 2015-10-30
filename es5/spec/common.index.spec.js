@@ -28,10 +28,6 @@ describe("troupe:common", function () {
 		assert.file(["es6/app/controllers/applicationController.js"]);
 	});
 
-	it("creates the common manager", function () {
-		assert.file(["es6/app/managers/accountManager.js"]);
-	});
-
 	it("creates other common files", function () {
 		assert.file(["es6/app/errors.js", "es6/app/server.js"]);
 	});
