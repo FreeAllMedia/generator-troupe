@@ -1,13 +1,13 @@
-import Account from "../../models/account.js";
+import <%= modelNamePascal %> from "../../models/<%= modelName %>.js";
 
 export default function list<%= modelNamePluralPascal %>(actionContext, next) {
-	Account.find
+	<%= modelNamePascal %>.find
 		.all
-		.results((findAccountError, result<%= modelNamePluralPascal %>) => {
-			if(findAccountError) {
-				next(findAccountError);
+		.results((findError, result) => {
+			if(findError) {
+				next(findError);
 			} else {
-				actionContext.<%= modelNamePlural %> = result<%= modelNamePluralPascal %>;
+				actionContext.<%= modelNamePlural %> = result;
 				next();
 			}
 		});

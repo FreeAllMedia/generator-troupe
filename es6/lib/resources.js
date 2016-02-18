@@ -40,5 +40,16 @@ module.exports = yeoman.Base.extend({
 				context
 			);
 		});
+
+		//copy resources spec
+		["modelsResources.spec.js"]
+		.forEach((templatePath) => {
+			let newName = templatePath.replace("models", `${context.modelNamePlural}`);
+			this.fs.copyTpl(
+				this.templatePath(`spec/api/models/${templatePath}`),
+				this.destinationPath(`spec/api/${context.modelNamePlural}/${newName}`),
+				context
+			);
+		});
 	}
 });

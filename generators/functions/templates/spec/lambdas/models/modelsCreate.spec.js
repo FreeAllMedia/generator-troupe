@@ -9,8 +9,7 @@ import AccessToken from "../../../dist/lib/models/accessToken.js";
 import <%= modelNamePluralPascal %>Create from "../../../dist/lib/lambdas/<%= modelNamePlural %>/<%= modelNamePlural %>Create.js";
 import authenticate from "../../../dist/lib/steps/authenticate.js";
 import authorize from "../../../dist/lib/steps/authorize.js";
-import save<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/save<%= modelNamePascal %>.js";
-import saveApiKey from "../../../dist/lib/steps/apiKeys/saveApiKey.js";
+import save<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/save<%= modelNamePluralPascal %>.js";
 import { jsonWebToken } from "hacher";
 
 describe("lambdas/<%= modelName %>Create.js", () => {
@@ -41,7 +40,7 @@ describe("lambdas/<%= modelName %>Create.js", () => {
 			"data": { "name": "test <%= modelName %>" }
 		};
 
-		handlerClass = new <%= modelNamePascal %>Create(input, context);
+		handlerClass = new <%= modelNamePluralPascal %>Create(input, context);
 	});
 
 	it("should have the database set", () => {
@@ -50,7 +49,7 @@ describe("lambdas/<%= modelName %>Create.js", () => {
 
 	describe("(permission)", () => {
 		it("should set the permission needed", () => {
-			handlerClass.actionContext.permission.should.equal("<%= modelName %>:create");
+			handlerClass.actionContext.permission.should.equal("<%= modelNamePlural %>:create");
 		});
 	});
 
@@ -65,10 +64,6 @@ describe("lambdas/<%= modelName %>Create.js", () => {
 
 		it("should add the create <%= modelName %> step", () => {
 			handlerClass.action.steps[0].steps[2].should.eql(save<%= modelNamePascal %>);
-		});
-
-		it("should add the saveApiKey step", () => {
-			handlerClass.action.steps[0].steps[3].should.eql(saveApiKey);
 		});
 	});
 
@@ -111,19 +106,14 @@ describe("lambdas/<%= modelName %>Create.js", () => {
 
 			beforeEach(() => {
 				result = new <%= modelNamePascal %>({ name: "an<%= modelName %>" });
-				accessToken = new AccessToken();
 				handlerClass.action = new Action(handlerClass.actionContext);
 				handlerClass.action.series((actionContext, next) => {
 					actionContext.<%= modelName %> = result;
-					actionContext.accessToken = accessToken;
 					next();
 				});
 
-				result.accessTokens.push(accessToken);
-
 				expectedResponse = {
-					data: jsonApiModelFormatter(result),
-					included: [jsonApiModelFormatter(accessToken)]
+					data: jsonApiModelFormatter(result)
 				};
 			});
 

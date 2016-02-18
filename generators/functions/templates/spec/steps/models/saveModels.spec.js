@@ -7,8 +7,6 @@ import chai from "chai";
 describe("steps/save<%= modelNamePluralPascal %>.js", () => {
 	let actionContext;
 	let database;
-	let tomorrow;
-	let yesterday;
 	let should;
 
 	before(() => {
@@ -16,9 +14,12 @@ describe("steps/save<%= modelNamePluralPascal %>.js", () => {
 	});
 
 	beforeEach(() => {
-		database = Model.database = new Database(require("../../../environment.json").testing);
+		database = Model.database = new Database({
+			"client": "mysql",
+			"debug": true
+		});
 
-		actionContext = { accountParameters: { name: "guest" } };
+		actionContext = { <%= modelName %>Parameters: { name: "guest" } };
 	});
 
 	describe("(when is valid)", () => {
@@ -31,7 +32,7 @@ describe("steps/save<%= modelNamePluralPascal %>.js", () => {
 					"name": "guest",
 					"created_at": regexs.date
 				})
-				.into("<%= modelNamePlural %>")
+				.into("<%= modelTableName %>")
 				.results([1]);
 		});
 
@@ -42,14 +43,14 @@ describe("steps/save<%= modelNamePluralPascal %>.js", () => {
 			});
 		});
 
-		it("should set the account in the action context", done => {
-			save<%= modelNamePluralPascal %>(actionContext, (error) => {
-				actionContext.account.id.should.equal(1);
+		it("should set the <%= modelName %> in the action context", done => {
+			save<%= modelNamePluralPascal %>(actionContext, () => {
+				actionContext.<%= modelName %>.id.should.equal(1);
 				done();
 			});
 		});
 
-		it("should execute the account insert query", done => {
+		it("should execute the <%= modelName %> insert query", done => {
 			save<%= modelNamePluralPascal %>(actionContext, () => {
 				mockQueryInsert.called.should.be.true;
 				done();
@@ -61,13 +62,13 @@ describe("steps/save<%= modelNamePluralPascal %>.js", () => {
 		let mockQueryUpdate;
 
 		beforeEach(() => {
-			actionContext = { accountId: 1, accountParameters: { name: "guest1" } };
+			actionContext = { <%= modelName %>Id: 1, <%= modelName %>Parameters: { name: "guest1" } };
 			mockQueryUpdate = database.mock
 				.update({
 					"name": "guest1",
 					"updated_at": regexs.date
 				})
-				.into("<%= modelNamePlural %>")
+				.into("<%= modelTableName %>")
 				.where("id", 1)
 				.results([1]);
 		});
@@ -79,14 +80,14 @@ describe("steps/save<%= modelNamePluralPascal %>.js", () => {
 			});
 		});
 
-		it("should set the account in the action context", done => {
+		it("should set the <%= modelName %> in the action context", done => {
 			save<%= modelNamePluralPascal %>(actionContext, () => {
-				actionContext.account.id.should.equal(1);
+				actionContext.<%= modelName %>.id.should.equal(1);
 				done();
 			});
 		});
 
-		it("should execute the account update query", done => {
+		it("should execute the <%= modelName %> update query", done => {
 			save<%= modelNamePluralPascal %>(actionContext, () => {
 				mockQueryUpdate.called.should.be.true;
 				done();
@@ -96,7 +97,7 @@ describe("steps/save<%= modelNamePluralPascal %>.js", () => {
 
 	describe("(when the new model is invalid)", () => {
 		beforeEach(() => {
-			actionContext = { accountId: 1, accountParameters: { name: null } };
+			actionContext = { <%= modelName %>Id: 1, <%= modelName %>Parameters: { name: null } };
 		});
 
 		it("should return with error", done => {

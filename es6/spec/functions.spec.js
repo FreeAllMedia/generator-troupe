@@ -29,6 +29,7 @@ describe("troupe:functions", () => {
 			[`spec/lambdas/${modelName}s/${modelName}sDelete.spec.js`, `import ApplesDelete from`],
 			[`spec/lambdas/${modelName}s/${modelName}sList.spec.js`, `import ApplesList from`],
 			[`source/lib/api/${modelName}s/${modelName}sFunctions.js`, `class ApplesFunctions`],
+			[`spec/api/${modelName}s/${modelName}sFunctions.spec.js`, `import ApplesFunctions`],
 			[`source/lib/steps/${modelName}s/deleteApples.js`, `function deleteApples`],
 			[`source/lib/steps/${modelName}s/fetchApples.js`, `function fetchApples`],
 			[`source/lib/steps/${modelName}s/listApples.js`, `function listApples`],
@@ -60,7 +61,8 @@ describe("troupe:functions", () => {
 			`spec/steps/${modelName}s/fetchApples.spec.js`,
 			`spec/steps/${modelName}s/listApples.spec.js`,
 			`spec/steps/${modelName}s/saveApples.spec.js`,
-			`source/lib/api/${modelName}s/${modelName}sFunctions.js`
+			`source/lib/api/${modelName}s/${modelName}sFunctions.js`,
+			`spec/api/${modelName}s/${modelName}sFunctions.spec.js`
 		]);
 	});
 });

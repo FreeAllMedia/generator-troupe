@@ -43,7 +43,7 @@ describe("lambdas/<%= modelName %>List.js", () => {
 			data: {}
 		};
 
-		handlerClass = new <%= modelNamePascal %>List(input, context);
+		handlerClass = new <%= modelNamePluralPascal %>List(input, context);
 	});
 
 	it("should have the database set", () => {
@@ -52,7 +52,7 @@ describe("lambdas/<%= modelName %>List.js", () => {
 
 	describe("(permission)", () => {
 		it("should set the permission needed", () => {
-			handlerClass.actionContext.permission.should.equal("<%= modelName %>:list");
+			handlerClass.actionContext.permission.should.equal("<%= modelNamePlural %>:list");
 		});
 	});
 
@@ -99,11 +99,9 @@ describe("lambdas/<%= modelName %>List.js", () => {
 
 			beforeEach(() => {
 				result = [new <%= modelNamePascal %>({ name: "an<%= modelName %>" })];
-				accessToken = new AccessToken();
 				handlerClass.action = new Action(handlerClass.actionContext);
 				handlerClass.action.series((actionContext, next) => {
 					actionContext.<%= modelNamePlural %> = result;
-					actionContext.accessToken = accessToken;
 					next();
 				});
 

@@ -15,7 +15,7 @@ export default class <%= modelNamePluralPascal %>Update {
 	constructor(input, context) {
 		this.database = Model.database;
 		this.actionContext = new ActionContext(input, context);
-		this.actionContext.permission = "<%= modelName %>:update";
+		this.actionContext.permission = "<%= modelNamePlural %>:update";
 		this.actionContext.<%= modelName %>Id = input.params.path.id;
 		this.actionContext.<%= modelName %>Parameters = input.data;
 		this.action = new Action(this.actionContext);

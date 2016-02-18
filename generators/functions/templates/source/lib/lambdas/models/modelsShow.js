@@ -14,7 +14,7 @@ export default class <%= modelNamePluralPascal %>Show {
 	constructor(input, context) {
 		this.database = Model.database;
 		this.actionContext = new ActionContext(input, context);
-		this.actionContext.permission = "<%= modelName %>:show";
+		this.actionContext.permission = "<%= modelNamePlural %>:show";
 		this.actionContext.<%= modelName %>Id = input.params.path.id;
 		this.action = new Action(this.actionContext);
 		this.action.series(

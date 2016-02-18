@@ -14,8 +14,7 @@ export default class <%= modelNamePluralPascal %>List {
 	constructor(input, context) {
 		this.database = Model.database;
 		this.actionContext = new ActionContext(input, context);
-		this.actionContext.permission = "<%= modelName %>:list";
-		this.actionContext.<%= modelName %>Id = input.params.path.id;
+		this.actionContext.permission = "<%= modelNamePlural %>:list";
 		this.action = new Action(this.actionContext);
 		this.action.series(
 				authenticate,

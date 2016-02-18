@@ -9,7 +9,7 @@ import AccessToken from "../../../dist/lib/models/accessToken.js";
 import <%= modelNamePluralPascal %>Show from "../../../dist/lib/lambdas/<%= modelNamePlural %>/<%= modelNamePlural %>Show.js";
 import authenticate from "../../../dist/lib/steps/authenticate.js";
 import authorize from "../../../dist/lib/steps/authorize.js";
-import fetch<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/fetch<%= modelNamePascal %>.js";
+import fetch<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/fetch<%= modelNamePluralPascal %>.js";
 import { jsonWebToken } from "hacher";
 
 describe("lambdas/<%= modelName %>.show.js", () => {
@@ -39,7 +39,7 @@ describe("lambdas/<%= modelName %>.show.js", () => {
 			}
 		};
 
-		handlerClass = new <%= modelNamePascal %>Show(input, context);
+		handlerClass = new <%= modelNamePluralPascal %>Show(input, context);
 	});
 
 	it("should have the database set", () => {
@@ -48,7 +48,7 @@ describe("lambdas/<%= modelName %>.show.js", () => {
 
 	describe("(permission)", () => {
 		it("should set the permission needed", () => {
-			handlerClass.actionContext.permission.should.equal("<%= modelName %>:show");
+			handlerClass.actionContext.permission.should.equal("<%= modelNamePlural %>:show");
 		});
 	});
 
@@ -101,11 +101,9 @@ describe("lambdas/<%= modelName %>.show.js", () => {
 
 			beforeEach(() => {
 				result = new <%= modelNamePascal %>({ name: "an<%= modelName %>" });
-				accessToken = new AccessToken();
 				handlerClass.action = new Action(handlerClass.actionContext);
 				handlerClass.action.series((actionContext, next) => {
 					actionContext.<%= modelName %> = result;
-					actionContext.accessToken = accessToken;
 					next();
 				});
 

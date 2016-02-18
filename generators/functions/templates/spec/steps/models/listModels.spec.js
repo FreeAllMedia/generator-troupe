@@ -18,7 +18,10 @@ describe("steps/list<%= modelNamePluralPascal %>.js", () => {
 	});
 
 	beforeEach(() => {
-		database = Model.database = new Database(require("../../../environment.json").testing);
+		database = Model.database = new Database({
+			"client": "mysql",
+			"debug": true
+		});
 
 		input = {};
 		context = {};
@@ -28,12 +31,12 @@ describe("steps/list<%= modelNamePluralPascal %>.js", () => {
 
 	describe("(when is valid)", () => {
 
-		let mockQuerySelectAccount;
+		let mockQuerySelect;
 
 		beforeEach(() => {
-			mockQuerySelectAccount = database.mock
+			mockQuerySelect = database.mock
 				.select("*")
-				.from("<%= modelNamePlural %>")
+				.from("<%= modelTableName %>")
 				.whereNull("deleted_at")
 				.results([{
 					"id": 1
@@ -52,7 +55,7 @@ describe("steps/list<%= modelNamePluralPascal %>.js", () => {
 
 		it("should execute the account query", done => {
 			list<%= modelNamePluralPascal %>(actionContext, () => {
-				mockQuerySelectAccount.called.should.be.true;
+				mockQuerySelect.called.should.be.true;
 				done();
 			});
 		});

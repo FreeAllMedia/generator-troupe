@@ -18,13 +18,15 @@ describe("troupe:resources", () => {
 
 	it("should set the key content into the files", () => {
 		assert.fileContent([
-			[`source/lib/api/${modelName}s/${modelName}sResources.js`, `class ApplesResources {`]
+			[`source/lib/api/${modelName}s/${modelName}sResources.js`, `class ApplesResources {`],
+			[`spec/api/${modelName}s/${modelName}sResources.spec.js`, `import ApplesResources`]
 		]);
 	});
 
 	it("should create the resource file", () => {
 		assert.file([
-			`source/lib/api/${modelName}s/${modelName}sResources.js`
+			`source/lib/api/${modelName}s/${modelName}sResources.js`,
+			`spec/api/${modelName}s/${modelName}sResources.spec.js`
 		]);
 	});
 });

@@ -32,7 +32,7 @@ module.exports = yeoman.Base.extend({
 		//copy functions
 		this.fs.copyTpl(
 			this.templatePath(`source/lib/models/model.js`),
-			this.destinationPath(`source/lib/${context.modelName}s/${context.modelName}.js`),
+			this.destinationPath(`source/lib/models/${context.modelName}.js`),
 			context
 		);
 	}

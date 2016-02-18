@@ -3,7 +3,7 @@ import regexs from "../../regexs.js";
 import Model from "dovima";
 import Database from "almaden";
 import chai from "chai";
-import Account from "../../../dist/lib/models/account.js";
+import <%= modelNamePascal %> from "../../../dist/lib/models/<%= modelName %>.js";
 
 describe("steps/delete<%= modelNamePluralPascal %>.js", () => {
 	let actionContext;
@@ -11,18 +11,21 @@ describe("steps/delete<%= modelNamePluralPascal %>.js", () => {
 	let tomorrow;
 	let yesterday;
 	let should;
-	let account;
+	let <%= modelName %>;
 
 	before(() => {
 		should = chai.should();
 	});
 
 	beforeEach(() => {
-		database = Model.database = new Database(require("../../../environment.json").testing);
+		database = Model.database = new Database({
+			"client": "mysql",
+			"debug": true
+		});
 
-		account = new Account({ id: 1, name: "guest" });
+		<%= modelName %> = new <%= modelNamePascal %>({ id: 1, name: "guest" });
 
-		actionContext = { account };
+		actionContext = { <%= modelName %> };
 	});
 
 	describe("(when is valid)", () => {
@@ -39,7 +42,7 @@ describe("steps/delete<%= modelNamePluralPascal %>.js", () => {
 					"updated_at": regexs.date,
 					"deleted_at": regexs.date
 				})
-				.into("<%= modelNamePlural %>")
+				.into("<%= modelTableName %>")
 				.where("id", 1)
 				.results([1]);
 		});
@@ -51,14 +54,14 @@ describe("steps/delete<%= modelNamePluralPascal %>.js", () => {
 			});
 		});
 
-		it("should set the account in the action context", done => {
+		it("should set the <%= modelName %> in the action context", done => {
 			delete<%= modelNamePluralPascal %>(actionContext, () => {
-				actionContext.account.id.should.equal(1);
+				actionContext.<%= modelName %>.id.should.equal(1);
 				done();
 			});
 		});
 
-		it("should execute the account query", done => {
+		it("should execute the <%= modelName %> query", done => {
 			delete<%= modelNamePluralPascal %>(actionContext, () => {
 				mockQueryInsert.called.should.be.true;
 				done();

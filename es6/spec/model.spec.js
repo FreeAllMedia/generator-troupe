@@ -18,13 +18,13 @@ describe("troupe:model", () => {
 
 	it("should set the key content into the files", () => {
 		assert.fileContent([
-			[`source/lib/apples/${modelName}.js`, `Apple extends Model`]
+			[`source/lib/models/${modelName}.js`, `Apple extends Model`]
 		]);
 	});
 
 	it("should create the model file", () => {
 		assert.file([
-			`source/lib/apples/${modelName}.js`
+			`source/lib/models/${modelName}.js`
 		]);
 	});
 });

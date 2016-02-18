@@ -28,7 +28,8 @@ module.exports = yeoman.Base.extend({
 			modelName: this.props.modelName,
 			modelNamePluralPascal: jargon(this.props.modelName).plural.pascal.toString(),
 			modelNamePascal: jargon(this.props.modelName).pascal.toString(),
-			modelNamePlural: jargon(this.props.modelName).plural.toString()
+			modelNamePlural: jargon(this.props.modelName).plural.toString(),
+			modelTableName: jargon(this.props.modelName).plural.snake.toString()
 		};
 
 		//copy functions
@@ -96,6 +97,17 @@ module.exports = yeoman.Base.extend({
 			this.fs.copyTpl(
 				this.templatePath(`source/lib/api/models/${templatePath}`),
 				this.destinationPath(`source/lib/api/${context.modelNamePlural}/${newName}`),
+				context
+			);
+		});
+
+		//copy function specs for deployment
+		["modelsFunctions.spec.js"]
+		.forEach((templatePath) => {
+			let newName = templatePath.replace("models", `${context.modelNamePlural}`);
+			this.fs.copyTpl(
+				this.templatePath(`spec/api/models/${templatePath}`),
+				this.destinationPath(`spec/api/${context.modelNamePlural}/${newName}`),
 				context
 			);
 		});

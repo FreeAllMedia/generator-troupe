@@ -15,7 +15,7 @@ export default class <%= modelNamePluralPascal %>Delete {
 	constructor(input, context) {
 		this.database = Model.database;
 		this.actionContext = new ActionContext(input, context);
-		this.actionContext.permission = "<%= modelName %>:delete";
+		this.actionContext.permission = "<%= modelNamePlural %>:delete";
 		this.actionContext.<%= modelName %>Id = input.params.path.id;
 		this.action = new Action(this.actionContext);
 		this.action.series(

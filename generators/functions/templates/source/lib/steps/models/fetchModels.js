@@ -1,26 +1,24 @@
-import Account from "../../models/account.js";
+import <%= modelNamePascal %> from "../../models/<%= modelName %>.js";
 import { getNotFoundError,
 	getInternalError,
 	getBadRequestError } from "../../errors.js";
 
 export default function fetch<%= modelNamePluralPascal %>(actionContext, next) {
-	let accountId;
-	if (actionContext && actionContext.accountId) {
-		accountId = actionContext.accountId;
-	} else if (actionContext.apiKey && actionContext.apiKey.accountId) {
-		accountId = actionContext.apiKey.accountId;
+	let <%= modelName %>Id;
+	if (actionContext && actionContext.<%= modelName %>Id) {
+		<%= modelName %>Id = actionContext.<%= modelName %>Id;
 	}
-	if(accountId) {
-		Account.find
+	if(<%= modelName %>Id) {
+		<%= modelNamePascal %>.find
 			.one
-			.where("id", accountId)
-			.results((findAccountError, resultAccount) => {
-				if(findAccountError) {
+			.where("id", <%= modelName %>Id)
+			.results((findError, result) => {
+				if(findError) {
 					next(getInternalError());
-				} else if (!resultAccount || !resultAccount.id) {
+				} else if (!result || !result.id) {
 					next(getNotFoundError());
 				} else {
-					actionContext.account = resultAccount;
+					actionContext.<%= modelName %> = result;
 					next();
 				}
 			});

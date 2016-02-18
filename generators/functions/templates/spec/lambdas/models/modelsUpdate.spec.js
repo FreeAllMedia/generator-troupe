@@ -9,8 +9,8 @@ import AccessToken from "../../../dist/lib/models/accessToken.js";
 import <%= modelNamePluralPascal %>Update from "../../../dist/lib/lambdas/<%= modelNamePlural %>/<%= modelNamePlural %>Update.js";
 import authenticate from "../../../dist/lib/steps/authenticate.js";
 import authorize from "../../../dist/lib/steps/authorize.js";
-import fetch<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/fetch<%= modelNamePascal %>.js";
-import save<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/save<%= modelNamePascal %>.js";
+import fetch<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/fetch<%= modelNamePluralPascal %>.js";
+import save<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/save<%= modelNamePluralPascal %>.js";
 import { jsonWebToken } from "hacher";
 
 describe("lambdas/<%= modelName %>Update.js", () => {
@@ -43,7 +43,7 @@ describe("lambdas/<%= modelName %>Update.js", () => {
 			"params": validAccessTokenParam
 		};
 
-		handlerClass = new <%= modelNamePascal %>Update(input, context);
+		handlerClass = new <%= modelNamePluralPascal %>Update(input, context);
 	});
 
 	it("should have the database set", () => {
@@ -52,7 +52,7 @@ describe("lambdas/<%= modelName %>Update.js", () => {
 
 	describe("(permission)", () => {
 		it("should set the permission needed", () => {
-			handlerClass.actionContext.permission.should.equal("<%= modelName %>:update");
+			handlerClass.actionContext.permission.should.equal("<%= modelNamePlural %>:update");
 		});
 	});
 
@@ -113,11 +113,9 @@ describe("lambdas/<%= modelName %>Update.js", () => {
 
 			beforeEach(() => {
 				result = new <%= modelNamePascal %>({ name: "an<%= modelName %>" });
-				accessToken = new AccessToken();
 				handlerClass.action = new Action(handlerClass.actionContext);
 				handlerClass.action.series((actionContext, next) => {
 					actionContext.<%= modelName %> = result;
-					actionContext.accessToken = accessToken;
 					next();
 				});
 

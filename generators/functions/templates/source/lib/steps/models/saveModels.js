@@ -1,16 +1,16 @@
-import Account from "../../models/account.js";
+import <%= modelNamePascal %> from "../../models/<%= modelName %>.js";
 
 export default function save<%= modelNamePluralPascal %>(actionContext, next) {
-	let accountParameters;
-	if(actionContext.accountParameters) {
-		accountParameters = actionContext.accountParameters;
+	let <%= modelName %>Parameters;
+	if(actionContext.<%= modelName %>Parameters) {
+		<%= modelName %>Parameters = actionContext.<%= modelName %>Parameters;
 	}
-	actionContext.account = new Account(accountParameters);
-	if(actionContext.accountId) {
-		actionContext.account.id = actionContext.accountId;
+	actionContext.<%= modelName %> = new <%= modelNamePascal %>(<%= modelName %>Parameters);
+	if(actionContext.<%= modelName %>Id) {
+		actionContext.<%= modelName %>.id = actionContext.<%= modelName %>Id;
 	}
 
-	actionContext.account.save((saveAccountError) => {
-		next(saveAccountError);
+	actionContext.<%= modelName %>.save((saveError) => {
+		next(saveError);
 	});
 }

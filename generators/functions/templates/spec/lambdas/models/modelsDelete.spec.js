@@ -10,8 +10,8 @@ import AccessToken from "../../../dist/lib/models/accessToken.js";
 import <%= modelNamePluralPascal %>Delete from "../../../dist/lib/lambdas/<%= modelNamePlural %>/<%= modelNamePlural %>Delete.js";
 import authenticate from "../../../dist/lib/steps/authenticate.js";
 import authorize from "../../../dist/lib/steps/authorize.js";
-import fetch<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/fetch<%= modelNamePascal %>.js";
-import delete<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/delete<%= modelNamePascal %>.js";
+import fetch<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/fetch<%= modelNamePluralPascal %>.js";
+import delete<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/delete<%= modelNamePluralPascal %>.js";
 
 describe("lambdas/<%= modelName %>.delete.js", () => {
 	let input;
@@ -45,7 +45,7 @@ describe("lambdas/<%= modelName %>.delete.js", () => {
 			"params": validAccessTokenParam
 		};
 
-		handlerClass = new <%= modelNamePascal %>Delete(input, context);
+		handlerClass = new <%= modelNamePluralPascal %>Delete(input, context);
 	});
 
 	it("should have the database set", () => {
@@ -54,7 +54,7 @@ describe("lambdas/<%= modelName %>.delete.js", () => {
 
 	describe("(permission)", () => {
 		it("should set the permission needed", () => {
-			handlerClass.actionContext.permission.should.equal("<%= modelName %>:delete");
+			handlerClass.actionContext.permission.should.equal("<%= modelNamePlural %>:delete");
 		});
 	});
 
@@ -111,11 +111,9 @@ describe("lambdas/<%= modelName %>.delete.js", () => {
 
 			beforeEach(() => {
 				result = new <%= modelNamePascal %>({ name: "an<%= modelName %>" });
-				accessToken = new AccessToken();
 				handlerClass.action = new Action(handlerClass.actionContext);
 				handlerClass.action.series((actionContext, next) => {
 					actionContext.<%= modelName %> = result;
-					actionContext.accessToken = accessToken;
 					next();
 				});
 

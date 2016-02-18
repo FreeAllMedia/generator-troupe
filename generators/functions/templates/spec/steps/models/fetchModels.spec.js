@@ -15,9 +15,12 @@ describe("steps/fetch<%= modelNamePluralPascal %>.js", () => {
 	});
 
 	beforeEach(() => {
-		database = Model.database = new Database(require("../../../environment.json").testing);
+		database = Model.database = new Database({
+			"client": "mysql",
+			"debug": true
+		});
 
-		actionContext = { accountId: 1 };
+		actionContext = { <%= modelName %>Id: 1 };
 	});
 
 	describe("(when is valid)", () => {
@@ -27,17 +30,16 @@ describe("steps/fetch<%= modelNamePluralPascal %>.js", () => {
 		beforeEach(() => {
 			mockQuerySelectApiKey = database.mock
 				.select("*")
-				.from("<%= modelNamePlural %>")
+				.from("<%= modelTableName %>")
 				.where("id", 1)
 				.whereNull("deleted_at")
 				.limit(1)
 				.results([{
-					"id": 1,
-					"account_id": 10
+					"id": 1
 				}]);
 		});
 
-		describe("(when the account exists via path param id)", () => {
+		describe("(when the <%= modelName %> exists via path param id)", () => {
 
 			it("should return with no error", done => {
 				fetch<%= modelNamePluralPascal %>(actionContext, (error) => {
@@ -46,27 +48,7 @@ describe("steps/fetch<%= modelNamePluralPascal %>.js", () => {
 				});
 			});
 
-			it("should execute the account query", done => {
-				fetch<%= modelNamePluralPascal %>(actionContext, () => {
-					mockQuerySelectApiKey.called.should.be.true;
-					done();
-				});
-			});
-		});
-
-		describe("(when the account exists via api key)", () => {
-			beforeEach(() => {
-				actionContext = { apiKey: { accountId: 1 } };
-			});
-
-			it("should return with no error", done => {
-				fetch<%= modelNamePluralPascal %>(actionContext, (error) => {
-					should.not.exist(error);
-					done();
-				});
-			});
-
-			it("should execute the account query", done => {
+			it("should execute the <%= modelName %> query", done => {
 				fetch<%= modelNamePluralPascal %>(actionContext, () => {
 					mockQuerySelectApiKey.called.should.be.true;
 					done();
@@ -75,14 +57,14 @@ describe("steps/fetch<%= modelNamePluralPascal %>.js", () => {
 		});
 	});
 
-	describe("(when not account id)", () => {
+	describe("(when not <%= modelName %> id)", () => {
 		describe("(when the id do not exist)", () => {
 			let mockQuery;
 
 			beforeEach(() => {
 				mockQuery = database.mock
 					.select("*")
-					.from("<%= modelNamePlural %>")
+					.from("<%= modelTableName %>")
 					.where("id", 1)
 					.whereNull("deleted_at")
 					.limit(1)
