@@ -1,6 +1,6 @@
 const path = require("path");
-const assert = require("yeoman-generator").assert;
-const helpers = require("yeoman-generator").test;
+import assert from "yeoman-assert";
+import test from "yeoman-test";
 const os = require("os");
 
 describe("troupe:features", () => {
@@ -8,7 +8,7 @@ describe("troupe:features", () => {
 
 	before((done) => {
 		name = "model";
-		helpers.run(path.join(__dirname, "../../generators/features"))
+		test.run(path.join(__dirname, "../../generators/features"))
 			.inDir(path.join(os.tmpdir(), "./temp-test"))
 			.withOptions({ "skip-install": true })
 			.withPrompts({

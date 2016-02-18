@@ -28,3 +28,5 @@ node_modules
 
 # lcov file
 lcov.info
+
+es5

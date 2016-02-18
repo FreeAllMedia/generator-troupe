@@ -4,7 +4,7 @@ var yosay = require("yosay");
 
 import inflect from "jargon";
 
-module.exports = yeoman.generators.Base.extend({
+module.exports = yeoman.Base.extend({
 	initializing: function yoInitializing() {
 		this.pkg = require("../../package.json");
 	},
