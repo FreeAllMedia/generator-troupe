@@ -1,4 +1,5 @@
 import save<%= modelNamePluralPascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/save<%= modelNamePluralPascal %>.js";
+import <%= modelNamePascal %> from "../../../dist/lib/models/<%= modelName %>.js";
 import regexs from "../../regexs.js";
 import Model from "dovima";
 import Database from "almaden";
@@ -19,7 +20,7 @@ describe("steps/save<%= modelNamePluralPascal %>.js", () => {
 			"debug": true
 		});
 
-		actionContext = { <%= modelName %>Parameters: { name: "guest" } };
+		actionContext = { <%= modelName %>Parameters: new <%= modelNamePascal %>({ name: "guest" }) };
 	});
 
 	describe("(when is valid)", () => {
@@ -62,7 +63,7 @@ describe("steps/save<%= modelNamePluralPascal %>.js", () => {
 		let mockQueryUpdate;
 
 		beforeEach(() => {
-			actionContext = { <%= modelName %>Id: 1, <%= modelName %>Parameters: { name: "guest1" } };
+			actionContext = { <%= modelName %>Id: 1, <%= modelName %>Parameters: new <%= modelNamePascal %>({ name: "guest1" }) };
 			mockQueryUpdate = database.mock
 				.update({
 					"name": "guest1",
@@ -97,7 +98,7 @@ describe("steps/save<%= modelNamePluralPascal %>.js", () => {
 
 	describe("(when the new model is invalid)", () => {
 		beforeEach(() => {
-			actionContext = { <%= modelName %>Id: 1, <%= modelName %>Parameters: { name: null } };
+			actionContext = { <%= modelName %>Id: 1, <%= modelName %>Parameters: new <%= modelNamePascal %>({ name: null }) };
 		});
 
 		it("should return with error", done => {

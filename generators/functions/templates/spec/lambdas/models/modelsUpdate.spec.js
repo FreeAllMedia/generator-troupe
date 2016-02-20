@@ -39,7 +39,7 @@ describe("lambdas/<%= modelName %>Update.js", () => {
 		};
 
 		input = {
-			"data": { "name": "test <%= modelName %>" },
+			"data": { "data": { "type": "<%= modelNamePlural %>", "attributes": { "name": "test <%= modelName %>" } } },
 			"params": validAccessTokenParam
 		};
 
@@ -76,7 +76,7 @@ describe("lambdas/<%= modelName %>Update.js", () => {
 
 	describe("(parameters)", () => {
 		it("should set the parameters for the save <%= modelName %> to use", () => {
-			handlerClass.actionContext.<%= modelName %>Parameters.should.eql({ "name": "test <%= modelName %>" });
+			handlerClass.actionContext.<%= modelName %>Parameters.should.eql(new <%= modelNamePascal %>({ "name": "test <%= modelName %>" }));
 		});
 
 		it("should set an <%= modelName %> id", () => {

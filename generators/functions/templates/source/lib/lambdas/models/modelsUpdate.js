@@ -7,6 +7,7 @@ import authenticate from "../../steps/authenticate.js";
 import authorize from "../../steps/authorize.js";
 import fetch<%= modelNamePluralPascal %> from "../../steps/<%= modelNamePlural %>/fetch<%= modelNamePluralPascal %>.js";
 import save<%= modelNamePluralPascal %> from "../../steps/<%= modelNamePlural %>/save<%= modelNamePluralPascal %>.js";
+import <%= modelNamePascal %> from "../../models/<%= modelName %>.js";
 import { local } from "../../../../environment.json";
 
 Model.database = new Database(local);
@@ -17,7 +18,7 @@ export default class <%= modelNamePluralPascal %>Update {
 		this.actionContext = new ActionContext(input, context);
 		this.actionContext.permission = "<%= modelNamePlural %>:update";
 		this.actionContext.<%= modelName %>Id = input.params.path.id;
-		this.actionContext.<%= modelName %>Parameters = input.data;
+		this.actionContext.<%= modelName %>Parameters = jsonApiModelFormatter(input.data.data, <%= modelNamePascal %>);
 		this.action = new Action(this.actionContext);
 		this.action.series(
 				authenticate,

@@ -6,6 +6,7 @@ import ActionContext from "../../actionContext.js";
 import authenticate from "../../steps/authenticate.js";
 import authorize from "../../steps/authorize.js";
 import save<%= modelNamePluralPascal %> from "../../steps/<%= modelNamePlural %>/save<%= modelNamePluralPascal %>.js";
+import <%= modelNamePascal %> from "../../models/<%= modelName %>.js";
 import { local } from "../../../../environment.json";
 
 Model.database = new Database(local);
@@ -15,7 +16,8 @@ export default class <%= modelNamePluralPascal %>Create {
 		this.database = Model.database;
 		this.actionContext = new ActionContext(input, context);
 		this.actionContext.permission = "<%= modelNamePlural %>:create";
-		this.actionContext.<%= modelName %>Parameters = input.data;
+		this.actionContext.<%= modelName %>Parameters = jsonApiModelFormatter(input.data.data, <%= modelNamePascal %>);
+		delete this.actionContext.<%= modelName %>Parameters.id;
 		this.action = new Action(this.actionContext);
 		this.action.series(
 				authenticate,

@@ -5,7 +5,6 @@ import jsonApiModelFormatter from "jsonapi-model-formatter";
 chai.should();
 
 import <%= modelNamePascal %> from "../../../dist/lib/models/<%= modelName %>.js";
-import AccessToken from "../../../dist/lib/models/accessToken.js";
 import <%= modelNamePluralPascal %>Create from "../../../dist/lib/lambdas/<%= modelNamePlural %>/<%= modelNamePlural %>Create.js";
 import authenticate from "../../../dist/lib/steps/authenticate.js";
 import authorize from "../../../dist/lib/steps/authorize.js";
@@ -37,7 +36,7 @@ describe("lambdas/<%= modelName %>Create.js", () => {
 
 		input = {
 			params: validAccessTokenParam,
-			"data": { "name": "test <%= modelName %>" }
+			"data": { "data": { "type": "<%= modelNamePlural %>", "attributes": { "name": "test <%= modelName %>" } } }
 		};
 
 		handlerClass = new <%= modelNamePluralPascal %>Create(input, context);
@@ -69,7 +68,7 @@ describe("lambdas/<%= modelName %>Create.js", () => {
 
 	describe("(parameters)", () => {
 		it("should set the parameters for the save <%= modelName %> to use", () => {
-			handlerClass.actionContext.<%= modelName %>Parameters.should.eql({ "name": "test <%= modelName %>" });
+			handlerClass.actionContext.<%= modelName %>Parameters.should.eql(new <%= modelNamePascal %>({ "name": "test <%= modelName %>" }));
 		});
 
 		it("should not set an <%= modelName %> id", () => {
@@ -101,7 +100,6 @@ describe("lambdas/<%= modelName %>Create.js", () => {
 
 		describe("(when the steps are executed correctly)", () => {
 			let result;
-			let accessToken;
 			let expectedResponse;
 
 			beforeEach(() => {
