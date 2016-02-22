@@ -9,6 +9,7 @@ import fetch<%= modelNamePluralPascal %> from "../../steps/<%= modelNamePlural %
 import save<%= modelNamePluralPascal %> from "../../steps/<%= modelNamePlural %>/save<%= modelNamePluralPascal %>.js";
 import <%= modelNamePascal %> from "../../models/<%= modelName %>.js";
 import { local } from "../../../../environment.json";
+import { getBadRequestError } from "../../errors.js";
 
 Model.database = new Database(local);
 
@@ -18,14 +19,17 @@ export default class <%= modelNamePluralPascal %>Update {
 		this.actionContext = new ActionContext(input, context);
 		this.actionContext.permission = "<%= modelNamePlural %>:update";
 		this.actionContext.<%= modelName %>Id = input.params.path.id;
-		this.actionContext.<%= modelName %>Parameters = jsonApiModelFormatter(input.data.data, <%= modelNamePascal %>);
-		this.action = new Action(this.actionContext);
-		this.action.series(
-				authenticate,
-				authorize,
-				fetch<%= modelNamePluralPascal %>,
-				save<%= modelNamePluralPascal %>
-			);
+
+		if(input.data.data) {
+			this.actionContext.<%= modelName %>Parameters = jsonApiModelFormatter(input.data.data, <%= modelNamePascal %>);
+			this.action = new Action(this.actionContext);
+			this.action.series(
+					authenticate,
+					authorize,
+					fetch<%= modelNamePluralPascal %>,
+					save<%= modelNamePluralPascal %>
+				);
+		}
 	}
 
 	/**
@@ -37,13 +41,17 @@ export default class <%= modelNamePluralPascal %>Update {
 	 * @return 	{undefined}														 Returns nothing
 	 */
 	handler(input, context) {
-		this.action
-			.results((errors) => {
-				if (errors) {
-					context.done(errors);
-				} else {
-					context.done(null, { data: jsonApiModelFormatter(this.actionContext.<%= modelName %>) });
-				}
-			});
+		if(this.action) {
+			this.action
+				.results((errors) => {
+					if (errors) {
+						context.done(errors);
+					} else {
+						context.done(null, { data: jsonApiModelFormatter(this.actionContext.<%= modelName %>) });
+					}
+				});
+		} else {
+			context.done(getBadRequestError());
+		}
 	}
 }

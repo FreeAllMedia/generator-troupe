@@ -46,6 +46,16 @@ describe("lambdas/<%= modelName %>Create.js", () => {
 		handlerClass.database.should.eql(Model.database);
 	});
 
+	it("should return an error if the input is not ok", done => {
+		callback = (handlerError) => {
+			handlerError.message.should.contain("BADREQUEST");
+			done();
+		};
+		delete input.data.data;
+		const apple = new ApplesCreate(input, context);
+		apple.handler(input, context);
+	});
+
 	describe("(permission)", () => {
 		it("should set the permission needed", () => {
 			handlerClass.actionContext.permission.should.equal("<%= modelNamePlural %>:create");

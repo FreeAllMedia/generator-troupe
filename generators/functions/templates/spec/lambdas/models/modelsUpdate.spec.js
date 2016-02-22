@@ -5,7 +5,6 @@ import jsonApiModelFormatter from "jsonapi-model-formatter";
 chai.should();
 
 import <%= modelNamePascal %> from "../../../dist/lib/models/<%= modelName %>.js";
-import AccessToken from "../../../dist/lib/models/accessToken.js";
 import <%= modelNamePluralPascal %>Update from "../../../dist/lib/lambdas/<%= modelNamePlural %>/<%= modelNamePlural %>Update.js";
 import authenticate from "../../../dist/lib/steps/authenticate.js";
 import authorize from "../../../dist/lib/steps/authorize.js";
@@ -17,6 +16,7 @@ describe("lambdas/<%= modelName %>Update.js", () => {
 	let input;
 	let handlerClass;
 	let callback;
+	let context;
 	let validAccessTokenParam;
 	let salt;
 
@@ -48,6 +48,16 @@ describe("lambdas/<%= modelName %>Update.js", () => {
 
 	it("should have the database set", () => {
 		handlerClass.database.should.eql(Model.database);
+	});
+
+	it("should return an error if the input is not ok", done => {
+		callback = (handlerError) => {
+			handlerError.message.should.contain("BADREQUEST");
+			done();
+		};
+		delete input.data.data;
+		const apple = new ApplesUpdate(input, context);
+		apple.handler(input, context);
 	});
 
 	describe("(permission)", () => {

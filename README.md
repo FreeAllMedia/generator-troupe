@@ -4,7 +4,6 @@ ES6 yeoman generator for FAM troupe.
 
 ```
 npm install -g generator-troupe
-yo forbin-scudl
 ```
 
 # Quality and Compatibility
@@ -26,8 +25,28 @@ cd node_modules/generator-troupe
 gulp test-local
 ```
 
-# Getting Started
-You can generate troupe controllers with cucumber features with this generator.
+# How to generate a SCUDL for a provider like AWS through Conan
+All of the generators will ask you for the model name, which is singular and camelCased. Eg: apple, account, accountType
+
+## 1. Generate the model
+```
+yo troupe:model
+```
+The models are generated with a default name property with a non empty validation. After the generation, is strongly recommended to add all the properties you need to validate, and all the relationships with other models.
+
+## 2. Generate the functions
+```
+yo troupe:functions
+```
+This generator will create all the lambda classes to handle the SCUDL operations, all the necessary steps to do that, and it will create also a specialized class that returns all the meta data that a deployer like Conan may need. Every file will have their spec file to test it's functionality.
+
+After this generation you will need to customize all the special steps, adding or removing everything that you may need, as well as the function metadata if necessary, like a timeout or anything.
+
+## 3. Generate the resources
+```
+yo troupe:resources
+```
+In this case, the generated class will provide the deployer all the metadata that he may need in order to create the api/http resources that calls the lambda functions. Remember to add here any meta information for the specific resource that you may need.
 
 # How to Contribute
 
@@ -39,7 +58,7 @@ We always aim to be friendly and helpful.
 
 ## Running Tests
 
-It's easy to run the test suite locally, and *highly recommended* if you're using Generator-troupe.js on a platform we aren't automatically testing for.
+It's easy to run the test suite locally, and *highly recommended* if you're using Troupe Generator on a platform we aren't automatically testing for.
 
 ```
 npm test

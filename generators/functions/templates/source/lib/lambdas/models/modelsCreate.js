@@ -8,6 +8,7 @@ import authorize from "../../steps/authorize.js";
 import save<%= modelNamePluralPascal %> from "../../steps/<%= modelNamePlural %>/save<%= modelNamePluralPascal %>.js";
 import <%= modelNamePascal %> from "../../models/<%= modelName %>.js";
 import { local } from "../../../../environment.json";
+import { getBadRequestError } from "../../errors.js";
 
 Model.database = new Database(local);
 
@@ -16,14 +17,17 @@ export default class <%= modelNamePluralPascal %>Create {
 		this.database = Model.database;
 		this.actionContext = new ActionContext(input, context);
 		this.actionContext.permission = "<%= modelNamePlural %>:create";
-		this.actionContext.<%= modelName %>Parameters = jsonApiModelFormatter(input.data.data, <%= modelNamePascal %>);
-		delete this.actionContext.<%= modelName %>Parameters.id;
-		this.action = new Action(this.actionContext);
-		this.action.series(
-				authenticate,
-				authorize,
-				save<%= modelNamePluralPascal %>
-			);
+
+		if(input.data.data) {
+			this.actionContext.<%= modelName %>Parameters = jsonApiModelFormatter(input.data.data, <%= modelNamePascal %>);
+			delete this.actionContext.<%= modelName %>Parameters.id;
+			this.action = new Action(this.actionContext);
+			this.action.series(
+					authenticate,
+					authorize,
+					save<%= modelNamePluralPascal %>
+				);
+		}
 	}
 
 	/**
@@ -35,14 +39,18 @@ export default class <%= modelNamePluralPascal %>Create {
 	 * @return 	{undefined}														 Returns nothing
 	 */
 	handler(input, context) {
-		this.action
-			.results((errors) => {
-				if (errors) {
-					context.done(errors);
-				} else {
-					const data = jsonApiModelFormatter(this.actionContext.<%= modelName %>);
-					context.done(null, { data });
-				}
-			});
+		if(this.action) {
+			this.action
+				.results((errors) => {
+					if (errors) {
+						context.done(errors);
+					} else {
+						const data = jsonApiModelFormatter(this.actionContext.<%= modelName %>);
+						context.done(null, { data });
+					}
+				});
+		} else {
+			context.done(getBadRequestError());
+		}
 	}
 }

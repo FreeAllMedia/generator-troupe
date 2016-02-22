@@ -2,7 +2,7 @@
   "name": "generator-troupe",
   "version": "0.1.2",
   "description": "Generator for FAM troupe.",
-  "main": "index.js",
+  "main": "./es5/lib/app.index.js",
   "scripts": {
     "test": "gulp test"
   },
