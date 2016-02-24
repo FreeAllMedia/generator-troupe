@@ -6,6 +6,7 @@ import ActionContext from "../../actionContext.js";
 import authenticate from "../../steps/authenticate.js";
 import authorize from "../../steps/authorize.js";
 import fetch<%= modelNamePluralPascal %> from "../../steps/<%= modelNamePlural %>/fetch<%= modelNamePluralPascal %>.js";
+import check<%= modelNamePascal %>Ownership from "../../steps/<%= modelNamePlural %>/check<%= modelNamePascal %>Ownership.js";
 import { local } from "../../../../environment.json";
 
 Model.database = new Database(local);
@@ -20,7 +21,8 @@ export default class <%= modelNamePluralPascal %>Show {
 		this.action.series(
 				authenticate,
 				authorize,
-				fetch<%= modelNamePluralPascal %>
+				fetch<%= modelNamePluralPascal %>,
+				check<%= modelNamePascal %>Ownership
 			);
 	}
 

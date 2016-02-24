@@ -34,10 +34,12 @@ describe("troupe:functions", () => {
 			[`source/lib/steps/${modelName}s/fetchApples.js`, `function fetchApples`],
 			[`source/lib/steps/${modelName}s/listApples.js`, `function listApples`],
 			[`source/lib/steps/${modelName}s/saveApples.js`, `function saveApples`],
+			[`source/lib/steps/${modelName}s/checkAppleOwnership.js`, `function checkAppleOwnership`],
 			[`spec/steps/${modelName}s/deleteApples.spec.js`, `import deleteApples`],
 			[`spec/steps/${modelName}s/fetchApples.spec.js`, `import fetchApples`],
 			[`spec/steps/${modelName}s/listApples.spec.js`, `import listApples`],
-			[`spec/steps/${modelName}s/saveApples.spec.js`, `import saveApples`]
+			[`spec/steps/${modelName}s/saveApples.spec.js`, `import saveApples`],
+			[`spec/steps/${modelName}s/checkAppleOwnership.spec.js`, `import checkAppleOwnership`]
 		]);
 	});
 
@@ -57,10 +59,12 @@ describe("troupe:functions", () => {
 			`source/lib/steps/${modelName}s/fetchApples.js`,
 			`source/lib/steps/${modelName}s/listApples.js`,
 			`source/lib/steps/${modelName}s/saveApples.js`,
+			`source/lib/steps/${modelName}s/checkAppleOwnership.js`,
 			`spec/steps/${modelName}s/deleteApples.spec.js`,
 			`spec/steps/${modelName}s/fetchApples.spec.js`,
 			`spec/steps/${modelName}s/listApples.spec.js`,
 			`spec/steps/${modelName}s/saveApples.spec.js`,
+			`spec/steps/${modelName}s/checkAppleOwnership.spec.js`,
 			`source/lib/api/${modelName}s/${modelName}sFunctions.js`,
 			`spec/api/${modelName}s/${modelName}sFunctions.spec.js`
 		]);

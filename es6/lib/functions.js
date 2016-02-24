@@ -90,6 +90,18 @@ module.exports = yeoman.Base.extend({
 			);
 		});
 
+		this.fs.copyTpl(
+			this.templatePath(`source/lib/steps/models/checkModelOwnership.js`),
+			this.destinationPath(`source/lib/steps/${context.modelNamePlural}/check${context.modelNamePascal}Ownership.js`),
+			context
+		);
+
+		this.fs.copyTpl(
+			this.templatePath(`spec/steps/models/checkModelOwnership.spec.js`),
+			this.destinationPath(`spec/steps/${context.modelNamePlural}/check${context.modelNamePascal}Ownership.spec.js`),
+			context
+		);
+
 		//copy functions for deployment
 		["modelsFunctions.js"]
 		.forEach((templatePath) => {

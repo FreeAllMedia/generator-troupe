@@ -52,8 +52,8 @@ describe("lambdas/<%= modelName %>Create.js", () => {
 			done();
 		};
 		delete input.data.data;
-		const apple = new ApplesCreate(input, context);
-		apple.handler(input, context);
+		const <%= modelName %> = new <%= modelNamePluralPascal %>Create(input, context);
+		<%= modelName %>.handler(input, context);
 	});
 
 	describe("(permission)", () => {

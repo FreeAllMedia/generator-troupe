@@ -7,6 +7,7 @@ import authenticate from "../../steps/authenticate.js";
 import authorize from "../../steps/authorize.js";
 import fetch<%= modelNamePluralPascal %> from "../../steps/<%= modelNamePlural %>/fetch<%= modelNamePluralPascal %>.js";
 import delete<%= modelNamePluralPascal %> from "../../steps/<%= modelNamePlural %>/delete<%= modelNamePluralPascal %>.js";
+import check<%= modelNamePascal %>Ownership from "../../steps/<%= modelNamePlural %>/check<%= modelNamePascal %>Ownership.js";
 import { local } from "../../../../environment.json";
 
 Model.database = new Database(local);
@@ -22,6 +23,7 @@ export default class <%= modelNamePluralPascal %>Delete {
 				authenticate,
 				authorize,
 				fetch<%= modelNamePluralPascal %>,
+				check<%= modelNamePascal %>Ownership,
 				delete<%= modelNamePluralPascal %>
 			);
 	}

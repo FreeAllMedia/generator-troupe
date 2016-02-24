@@ -10,6 +10,7 @@ import <%= modelNamePluralPascal %>Show from "../../../dist/lib/lambdas/<%= mode
 import authenticate from "../../../dist/lib/steps/authenticate.js";
 import authorize from "../../../dist/lib/steps/authorize.js";
 import fetch<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/fetch<%= modelNamePluralPascal %>.js";
+import check<%= modelNamePascal %>Ownership from "../../../dist/lib/steps/<%= modelNamePlural %>/check<%= modelNamePascal %>Ownership.js";
 import { jsonWebToken } from "hacher";
 
 describe("lambdas/<%= modelName %>.show.js", () => {
@@ -63,6 +64,10 @@ describe("lambdas/<%= modelName %>.show.js", () => {
 
 		it("should add the fetch <%= modelName %> step", () => {
 			handlerClass.action.steps[0].steps[2].should.eql(fetch<%= modelNamePascal %>);
+		});
+
+		it("should add the fetch <%= modelNamePascal %> step", () => {
+			handlerClass.action.steps[0].steps[3].should.eql(check<%= modelNamePascal %>Ownership);
 		});
 	});
 

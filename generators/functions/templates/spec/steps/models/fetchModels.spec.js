@@ -6,8 +6,6 @@ import chai from "chai";
 describe("steps/fetch<%= modelNamePluralPascal %>.js", () => {
 	let actionContext;
 	let database;
-	let tomorrow;
-	let yesterday;
 	let should;
 
 	before(() => {
@@ -74,6 +72,13 @@ describe("steps/fetch<%= modelNamePluralPascal %>.js", () => {
 			it("should return an NOTFOUND error", done => {
 				fetch<%= modelNamePluralPascal %>(actionContext, (error) => {
 					error.message.should.contain("NOTFOUND: ");
+					done();
+				});
+			});
+
+			it("should call the query", done => {
+				fetch<%= modelNamePluralPascal %>(actionContext, (error) => {
+					mockQuery.called.should.be.true;
 					done();
 				});
 			});

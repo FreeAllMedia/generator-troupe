@@ -42,6 +42,9 @@ This generator will create all the lambda classes to handle the SCUDL operations
 
 After this generation you will need to customize all the special steps, adding or removing everything that you may need, as well as the function metadata if necessary, like a timeout or anything.
 
+Also, and this is important. You will need to customize the check<Model>Ownership step according to your needs.
+It's important to say that the list services usually have special treatments for permissions (it checks the parent model ownership) so you have to take care of that too.
+
 ## 3. Generate the resources
 ```
 yo troupe:resources

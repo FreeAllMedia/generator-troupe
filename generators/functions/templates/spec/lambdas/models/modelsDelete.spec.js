@@ -6,12 +6,12 @@ import { jsonWebToken } from "hacher";
 chai.should();
 
 import <%= modelNamePascal %> from "../../../dist/lib/models/<%= modelName %>.js";
-import AccessToken from "../../../dist/lib/models/accessToken.js";
 import <%= modelNamePluralPascal %>Delete from "../../../dist/lib/lambdas/<%= modelNamePlural %>/<%= modelNamePlural %>Delete.js";
 import authenticate from "../../../dist/lib/steps/authenticate.js";
 import authorize from "../../../dist/lib/steps/authorize.js";
 import fetch<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/fetch<%= modelNamePluralPascal %>.js";
 import delete<%= modelNamePascal %> from "../../../dist/lib/steps/<%= modelNamePlural %>/delete<%= modelNamePluralPascal %>.js";
+import check<%= modelNamePascal %>Ownership from "../../../dist/lib/steps/<%= modelNamePlural %>/check<%= modelNamePascal %>Ownership.js";
 
 describe("lambdas/<%= modelName %>.delete.js", () => {
 	let input;
@@ -67,12 +67,16 @@ describe("lambdas/<%= modelName %>.delete.js", () => {
 			handlerClass.action.steps[0].steps[1].should.eql(authorize);
 		});
 
-		it("should add the create <%= modelName %> step", () => {
+		it("should add the fetch <%= modelName %> step", () => {
 			handlerClass.action.steps[0].steps[2].should.eql(fetch<%= modelNamePascal %>);
 		});
 
+		it("should add the fetch <%= modelName %> step", () => {
+			handlerClass.action.steps[0].steps[3].should.eql(check<%= modelNamePascal %>Ownership);
+		});
+
 		it("should add the saveApiKey step", () => {
-			handlerClass.action.steps[0].steps[3].should.eql(delete<%= modelNamePascal %>);
+			handlerClass.action.steps[0].steps[4].should.eql(delete<%= modelNamePascal %>);
 		});
 	});
 
@@ -106,7 +110,6 @@ describe("lambdas/<%= modelName %>.delete.js", () => {
 
 		describe("(when the steps are executed correctly)", () => {
 			let result;
-			let accessToken;
 			let expectedResponse;
 
 			beforeEach(() => {
@@ -119,7 +122,7 @@ describe("lambdas/<%= modelName %>.delete.js", () => {
 
 				expectedResponse = {
 					data: jsonApiModelFormatter(result)
-				}
+				};
 			});
 
 			it("should return the results as expected", done => {

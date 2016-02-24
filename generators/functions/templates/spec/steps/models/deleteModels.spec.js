@@ -8,8 +8,6 @@ import <%= modelNamePascal %> from "../../../dist/lib/models/<%= modelName %>.js
 describe("steps/delete<%= modelNamePluralPascal %>.js", () => {
 	let actionContext;
 	let database;
-	let tomorrow;
-	let yesterday;
 	let should;
 	let <%= modelName %>;
 

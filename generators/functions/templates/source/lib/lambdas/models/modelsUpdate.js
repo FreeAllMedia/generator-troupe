@@ -7,6 +7,7 @@ import authenticate from "../../steps/authenticate.js";
 import authorize from "../../steps/authorize.js";
 import fetch<%= modelNamePluralPascal %> from "../../steps/<%= modelNamePlural %>/fetch<%= modelNamePluralPascal %>.js";
 import save<%= modelNamePluralPascal %> from "../../steps/<%= modelNamePlural %>/save<%= modelNamePluralPascal %>.js";
+import check<%= modelNamePascal %>Ownership from "../../steps/<%= modelNamePlural %>/check<%= modelNamePascal %>Ownership.js";
 import <%= modelNamePascal %> from "../../models/<%= modelName %>.js";
 import { local } from "../../../../environment.json";
 import { getBadRequestError } from "../../errors.js";
@@ -27,6 +28,7 @@ export default class <%= modelNamePluralPascal %>Update {
 					authenticate,
 					authorize,
 					fetch<%= modelNamePluralPascal %>,
+					check<%= modelNamePascal %>Ownership,
 					save<%= modelNamePluralPascal %>
 				);
 		}

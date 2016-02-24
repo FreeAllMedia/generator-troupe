@@ -9,8 +9,6 @@ describe("steps/list<%= modelNamePluralPascal %>.js", () => {
 	let context;
 	let actionContext;
 	let database;
-	let tomorrow;
-	let yesterday;
 	let should;
 
 	before(() => {
