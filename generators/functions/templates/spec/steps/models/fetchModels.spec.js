@@ -77,7 +77,7 @@ describe("steps/fetch<%= modelNamePluralPascal %>.js", () => {
 			});
 
 			it("should call the query", done => {
-				fetch<%= modelNamePluralPascal %>(actionContext, (error) => {
+				fetch<%= modelNamePluralPascal %>(actionContext, () => {
 					mockQuery.called.should.be.true;
 					done();
 				});

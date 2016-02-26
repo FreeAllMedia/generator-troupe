@@ -1,4 +1,4 @@
-import Model, {isNotEmpty} from "dovima";
+import Model, { isNotEmpty } from "dovima";
 
 export default class <%= modelNamePascal %> extends Model {
 	static useSoftDelete() {}

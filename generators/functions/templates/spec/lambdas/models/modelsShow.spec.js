@@ -5,7 +5,6 @@ import jsonApiModelFormatter from "jsonapi-model-formatter";
 chai.should();
 
 import <%= modelNamePascal %> from "../../../dist/lib/models/<%= modelName %>.js";
-import AccessToken from "../../../dist/lib/models/accessToken.js";
 import <%= modelNamePluralPascal %>Show from "../../../dist/lib/lambdas/<%= modelNamePlural %>/<%= modelNamePlural %>Show.js";
 import authenticate from "../../../dist/lib/steps/authenticate.js";
 import authorize from "../../../dist/lib/steps/authorize.js";
@@ -101,7 +100,6 @@ describe("lambdas/<%= modelName %>.show.js", () => {
 
 		describe("(when the steps are executed correctly)", () => {
 			let result;
-			let accessToken;
 			let expectedResponse;
 
 			beforeEach(() => {
@@ -114,7 +112,7 @@ describe("lambdas/<%= modelName %>.show.js", () => {
 
 				expectedResponse = {
 					data: jsonApiModelFormatter(result)
-				}
+				};
 			});
 
 			it("should return the results as expected", done => {

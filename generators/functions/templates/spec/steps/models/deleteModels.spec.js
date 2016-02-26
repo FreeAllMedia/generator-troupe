@@ -28,13 +28,10 @@ describe("steps/delete<%= modelNamePluralPascal %>.js", () => {
 
 	describe("(when is valid)", () => {
 
-		let mockQueryInsert;
-		let mockQueryApiKeyInsert;
-		let mockQueryRoleSelect;
-		let mockQueryApiKeyRoleInsert;
+		let mockQueryUpdate;
 
 		beforeEach(() => {
-			mockQueryInsert = database.mock
+			mockQueryUpdate = database.mock
 				.update({
 					"name": "guest",
 					"updated_at": regexs.date,
@@ -61,7 +58,7 @@ describe("steps/delete<%= modelNamePluralPascal %>.js", () => {
 
 		it("should execute the <%= modelName %> query", done => {
 			delete<%= modelNamePluralPascal %>(actionContext, () => {
-				mockQueryInsert.called.should.be.true;
+				mockQueryUpdate.called.should.be.true;
 				done();
 			});
 		});
